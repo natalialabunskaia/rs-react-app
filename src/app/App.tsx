@@ -4,7 +4,7 @@ import Results from './components/Results';
 import axios from 'axios';
 
 type PokemonResult = {
-    pokemon: {
+  pokemon: {
     name: string;
     url: string;
   };
@@ -42,13 +42,13 @@ export default class App extends React.Component<object, AppState> {
     }
   };
 
-  handleChange = (e:React.ChangeEvent<HTMLInputElement> ) => {
+  handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ searchTerm: e.target.value }, () =>
       console.log('new state value searchTerm:', this.state.searchTerm)
     );
   };
 
-  handleSubmit = (e:React.SubmitEvent<HTMLFormElement>) => {
+  handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     this.getPokemons();
   };
@@ -61,7 +61,10 @@ export default class App extends React.Component<object, AppState> {
           onChange={this.handleChange}
           onSubmit={this.handleSubmit}
         />
-        <Results />
+        <Results
+          pokemons={this.state.results}
+          searchTerm={this.state.searchTerm}
+        />
       </main>
     );
   }
