@@ -1,10 +1,18 @@
 import React from 'react';
 
-export default class Search extends React.Component {
+type SearchProps = {
+  searchTerm: string,
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
+  onSubmit: (e: React.SubmitEvent<HTMLFormElement>) => void
+}
+
+export default class Search extends React.Component<SearchProps> {
   render() {
+    const { searchTerm, onChange, onSubmit } = this.props;
+
     return (
       <section className="container-fluid bg-dark text-white p-5">
-        <form>
+        <form onSubmit={onSubmit}>
           <div className="row">
             <div className="col">
               <div className="form-floating">
@@ -18,6 +26,8 @@ export default class Search extends React.Component {
                   className="form-control w-100"
                   placeholder="pokemon type"
                   autoComplete="off"
+                  onChange={onChange}
+                  value={searchTerm}
                 />
                 <label htmlFor="type-input">Enter Pokemon type</label>
               </div>
