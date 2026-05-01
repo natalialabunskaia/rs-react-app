@@ -4,11 +4,9 @@ import Results from './components/Results';
 import axios from 'axios';
 
 type PokemonResult = {
-  pokemon: {
-    name: string;
-    url: string;
-  };
-  slot: number;
+  name: string;
+  imgUrl: string;
+  description: string;
 };
 
 type AppState = {
@@ -17,6 +15,14 @@ type AppState = {
   isLoading: boolean;
   error: string | null;
 };
+
+type ItemPokemon = {
+  url: string
+}
+
+type ItemType = {
+  pokemon: ItemPokemon
+}
 
 export default class App extends React.Component<object, AppState> {
   constructor(props: object) {
@@ -31,26 +37,53 @@ export default class App extends React.Component<object, AppState> {
 
   getPokemons = async () => {
     const { searchTerm } = this.state;
-    const path = `https://pokeapi.co/api/v2/type/${searchTerm}`;
-    try {
-      const res = await axios.get(path);
-      this.setState({ results: res.data.pokemon }
-      );
-    } catch (error) {
-      console.error('Error: this pokemon type does not exist', error);
+
+    let urls: string[] = [];
+
+    if (!searchTerm) {
+      const path = 'https://pokeapi.co/api/v2/pokemon/';
+      try {
+        const res = await axios.get(path);
+        urls = res.data.results.map((item: ItemPokemon) => item.url);
+      } catch (error) {
+        console.error('Error: render empty input', error);
+      }
+    } else {
+      const path = `https://pokeapi.co/api/v2/type/${searchTerm}`;
+      try {
+        const res = await axios.get(path);
+        urls = res.data.pokemon.map((item: ItemType) => item.pokemon.url);
+      } catch (error) {
+        console.error('Error: render pockemon types', error);
+      }
     }
+    const results: PokemonResult[] = [];
+    for (const url of urls) {
+      const res = await axios.get(url);
+      const description = `Pokemon weight: ${res.data.weight} kg \n Pokemon heiht: ${res.data.height}`;
+      const pokemon = {
+        name: res.data.name,
+        imgUrl: res.data.sprites.front_default,
+        description,
+      };
+      results.push(pokemon);
+    }
+    this.setState({ results });
   };
 
   handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchTerm: e.target.value }
-    );
+    this.setState({ searchTerm: e.target.value });
   };
 
   handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    localStorage.setItem('searchTerm', this.state.searchTerm.trim())
+    localStorage.setItem('searchTerm', this.state.searchTerm.trim());
     this.getPokemons();
   };
+
+  componentDidMount(): void {
+    this.getPokemons();
+  }
 
   render() {
     return (
