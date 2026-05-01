@@ -24,8 +24,8 @@ export default class Results extends React.Component<SearchProps> {
               <div className="col" key={item.pokemon.name}>
                 <div className="card h-100">
                   <div className="card-body">
-                    <h5 className="card-title text-capitalize">{item.pokemon.name}</h5>
-                    <p className="card-text">Type:{` ${searchTerm}`}</p>
+                    <h5 className="card-title text-capitalize">Name: {item.pokemon.name}</h5>
+                    <p className="card-text">Description: This Pokémon has {searchTerm} type</p>
                   </div>
                 </div>
               </div>
