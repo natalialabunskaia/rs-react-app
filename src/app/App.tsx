@@ -61,7 +61,7 @@ export default class App extends React.Component<object, AppState> {
       };
       results.push(pokemon);
     }
-    this.setState({ results });
+    this.setState({ results, isLoading: false });
   };
 
   handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
