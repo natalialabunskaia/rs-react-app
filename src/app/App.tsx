@@ -9,6 +9,7 @@ import type {
   ItemPokemon,
   ItemType,
 } from './utils/types';
+import SearchStatus from './components/SearchStatus';
 
 export default class App extends React.Component<object, AppState> {
   constructor(props: object) {
@@ -16,7 +17,7 @@ export default class App extends React.Component<object, AppState> {
     this.state = {
       searchTerm: localStorage.getItem('searchTerm') || '',
       results: [],
-      isLoading: false,
+      requestStatus: 'idle', // 'loading', 'success', 'error'
       error: null,
     };
   }
@@ -25,8 +26,8 @@ export default class App extends React.Component<object, AppState> {
     const { searchTerm } = this.state;
 
     this.setState({
-      isLoading: true,
-      error: '',
+      requestStatus: 'loading',
+      error: null,
     });
 
     let urls: string[] = [];
@@ -37,7 +38,11 @@ export default class App extends React.Component<object, AppState> {
         const res = await axios.get(path);
         urls = res.data.results.map((item: ItemPokemon) => item.url);
       } catch (error) {
-        this.setState({ error: getErrorMessage(error.code), isLoading: false });
+        this.setState({
+          error: getErrorMessage(error.code),
+          requestStatus: 'error',
+        });
+        return;
       }
     } else {
       const path = `https://pokeapi.co/api/v2/type/${searchTerm}`;
@@ -47,7 +52,11 @@ export default class App extends React.Component<object, AppState> {
           .slice(0, 20)
           .map((item: ItemType) => item.pokemon.url);
       } catch (error) {
-        this.setState({ error: getErrorMessage(error.code), isLoading: false });
+        this.setState({
+          error: getErrorMessage(error.code),
+          requestStatus: 'error',
+        });
+        return;
       }
     }
     const results: PokemonResult[] = [];
@@ -61,7 +70,7 @@ export default class App extends React.Component<object, AppState> {
       };
       results.push(pokemon);
     }
-    this.setState({ results, isLoading: false });
+    this.setState({ results, requestStatus: 'success' });
   };
 
   handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,12 +100,18 @@ export default class App extends React.Component<object, AppState> {
   render() {
     return (
       <main>
-        <Search
-          searchTerm={this.state.searchTerm}
-          onChange={this.handleChange}
-          onSubmit={this.handleSubmit}
-          error={this.state.error}
-        />
+        <section className="container-fluid bg-dark text-white p-5">
+          <Search
+            searchTerm={this.state.searchTerm}
+            onChange={this.handleChange}
+            onSubmit={this.handleSubmit}
+            error={this.state.error}
+          />
+          <SearchStatus
+            requestStatus={this.state.requestStatus}
+            error={this.state.error}
+          ></SearchStatus>
+        </section>
         <Results
           pokemons={this.state.results}
           searchTerm={this.state.searchTerm}

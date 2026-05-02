@@ -3,10 +3,10 @@ import type { SearchProps } from '../utils/types';
 
 export default class Search extends React.Component<SearchProps> {
   render() {
-    const { searchTerm, onChange, onSubmit, error } = this.props;
+    const { searchTerm, onChange, onSubmit } = this.props;
 
     return (
-      <section className="container-fluid bg-dark text-white p-5">
+      <>
         <form onSubmit={onSubmit}>
           <div className="row">
             <div className="col">
@@ -24,7 +24,7 @@ export default class Search extends React.Component<SearchProps> {
                   onChange={onChange}
                   value={searchTerm}
                 />
-                <label htmlFor="type-input">Enter Pokemon type</label>
+                <label htmlFor="type-input">Enter Pokémon type</label>
               </div>
             </div>
             <div className="col-auto">
@@ -39,10 +39,9 @@ export default class Search extends React.Component<SearchProps> {
           </div>
         </form>
         <p className="mt-2 mb-0 text-secondary">
-          Example: fighting, fire, electric, dragon, etc
+          Example: fighting, fire, electric, dragon, water, grass, ice, etc
         </p>
-        {error && <p className="mt-2 mb-0 text-danger">{error}</p>}
-      </section>
+      </>
     );
   }
 }

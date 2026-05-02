@@ -7,7 +7,7 @@ export type PokemonResult = {
 export type AppState = {
   searchTerm: string;
   results: PokemonResult[];
-  isLoading: boolean;
+  requestStatus: string;
   error: string | null;
 };
 
@@ -31,3 +31,7 @@ export type SearchProps = {
   error: string;
 };
 
+export type SearchStatusProps = {
+  requestStatus: string;
+  error: string;
+};
