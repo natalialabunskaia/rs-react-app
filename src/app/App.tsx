@@ -61,7 +61,7 @@ export default class App extends React.Component<object, AppState> {
     }
     const results: PokemonResult[] = [];
     for (const url of urls) {
-      const res = await axios.get(url);
+     try { const res = await axios.get(url);
       const description = `Pokemon weight: ${res.data.weight} kg \n Pokemon height: ${res.data.height} m`;
       const pokemon = {
         name: res.data.name,
@@ -69,8 +69,15 @@ export default class App extends React.Component<object, AppState> {
         description,
       };
       results.push(pokemon);
+    } catch (error) {
+      this.setState({
+        error: getErrorMessage(error.code),
+        requestStatus: 'error'
+      });
+      return;
     }
-    this.setState({ results, requestStatus: 'success' });
+    }
+    this.setState({ results, requestStatus: 'success', error: null });
   };
 
   handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
