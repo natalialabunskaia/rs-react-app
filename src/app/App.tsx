@@ -17,12 +17,12 @@ type AppState = {
 };
 
 type ItemPokemon = {
-  url: string
-}
+  url: string;
+};
 
 type ItemType = {
-  pokemon: ItemPokemon
-}
+  pokemon: ItemPokemon;
+};
 
 export default class App extends React.Component<object, AppState> {
   constructor(props: object) {
@@ -52,7 +52,9 @@ export default class App extends React.Component<object, AppState> {
       const path = `https://pokeapi.co/api/v2/type/${searchTerm}`;
       try {
         const res = await axios.get(path);
-        urls = res.data.pokemon.slice(0, 20).map((item: ItemType) => item.pokemon.url);
+        urls = res.data.pokemon
+          .slice(0, 20)
+          .map((item: ItemType) => item.pokemon.url);
       } catch (error) {
         console.error('Error: render pockemon types', error);
       }
@@ -76,9 +78,13 @@ export default class App extends React.Component<object, AppState> {
   };
 
   handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+    const { searchTerm } = this.state;
     e.preventDefault();
-    localStorage.setItem('searchTerm', this.state.searchTerm.trim());
-    this.getPokemons();
+    const trimmedSearchTerm = searchTerm.trim().toLocaleLowerCase();
+    this.setState({ searchTerm: trimmedSearchTerm }, () => {
+      localStorage.setItem('searchTerm', trimmedSearchTerm);
+      this.getPokemons();
+    });
   };
 
   componentDidMount(): void {
