@@ -1,11 +1,5 @@
 import React from 'react';
-
-type SearchProps = {
-  searchTerm: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onSubmit: (e: React.SubmitEvent<HTMLFormElement>) => void;
-  error: string;
-};
+import type { SearchProps } from '../utils/types';
 
 export default class Search extends React.Component<SearchProps> {
   render() {

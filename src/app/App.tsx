@@ -3,27 +3,12 @@ import Search from './components/Search';
 import Results from './components/Results';
 import axios from 'axios';
 import getErrorMessage from './utils/getErrorMessage';
-
-type PokemonResult = {
-  name: string;
-  imgUrl: string;
-  description: string;
-};
-
-type AppState = {
-  searchTerm: string;
-  results: PokemonResult[];
-  isLoading: boolean;
-  error: string | null;
-};
-
-type ItemPokemon = {
-  url: string;
-};
-
-type ItemType = {
-  pokemon: ItemPokemon;
-};
+import type {
+  AppState,
+  PokemonResult,
+  ItemPokemon,
+  ItemType,
+} from './utils/types';
 
 export default class App extends React.Component<object, AppState> {
   constructor(props: object) {

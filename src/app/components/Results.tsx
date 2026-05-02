@@ -1,17 +1,7 @@
 import React from 'react';
+import type { ResultProps } from '../utils/types';
 
-type PokemonResult = {
-  name: string;
-  imgUrl: string;
-  description: string;
-};
-
-type SearchProps = {
-  pokemons: PokemonResult[];
-  searchTerm: string;
-};
-
-export default class Results extends React.Component<SearchProps> {
+export default class Results extends React.Component<ResultProps> {
   render() {
     const { pokemons } = this.props;
     return (
