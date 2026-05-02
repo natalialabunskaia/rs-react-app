@@ -2,6 +2,7 @@ import React from 'react';
 import Search from './components/Search';
 import Results from './components/Results';
 import axios from 'axios';
+import getErrorMessage from './utils/getErrorMessage';
 
 type PokemonResult = {
   name: string;
@@ -38,6 +39,11 @@ export default class App extends React.Component<object, AppState> {
   getPokemons = async () => {
     const { searchTerm } = this.state;
 
+    this.setState({
+      isLoading: true,
+      error: '',
+    });
+
     let urls: string[] = [];
 
     if (!searchTerm) {
@@ -46,7 +52,7 @@ export default class App extends React.Component<object, AppState> {
         const res = await axios.get(path);
         urls = res.data.results.map((item: ItemPokemon) => item.url);
       } catch (error) {
-        console.error('Error: render empty input', error);
+        this.setState({ error: getErrorMessage(error.code), isLoading: false });
       }
     } else {
       const path = `https://pokeapi.co/api/v2/type/${searchTerm}`;
@@ -56,7 +62,7 @@ export default class App extends React.Component<object, AppState> {
           .slice(0, 20)
           .map((item: ItemType) => item.pokemon.url);
       } catch (error) {
-        console.error('Error: render pockemon types', error);
+        this.setState({ error: getErrorMessage(error.code), isLoading: false });
       }
     }
     const results: PokemonResult[] = [];
@@ -104,6 +110,7 @@ export default class App extends React.Component<object, AppState> {
           searchTerm={this.state.searchTerm}
           onChange={this.handleChange}
           onSubmit={this.handleSubmit}
+          error={this.state.error}
         />
         <Results
           pokemons={this.state.results}

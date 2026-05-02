@@ -1,14 +1,15 @@
 import React from 'react';
 
 type SearchProps = {
-  searchTerm: string,
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
-  onSubmit: (e: React.SubmitEvent<HTMLFormElement>) => void
-}
+  searchTerm: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSubmit: (e: React.SubmitEvent<HTMLFormElement>) => void;
+  error: string;
+};
 
 export default class Search extends React.Component<SearchProps> {
   render() {
-    const { searchTerm, onChange, onSubmit } = this.props;
+    const { searchTerm, onChange, onSubmit, error } = this.props;
 
     return (
       <section className="container-fluid bg-dark text-white p-5">
@@ -46,6 +47,7 @@ export default class Search extends React.Component<SearchProps> {
         <p className="mt-2 mb-0 text-secondary">
           Example: fighting, fire, electric, dragon, etc
         </p>
+        {error && <p className="mt-2 mb-0 text-danger">{error}</p>}
       </section>
     );
   }
