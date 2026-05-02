@@ -80,9 +80,15 @@ export default class App extends React.Component<object, AppState> {
   handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     const { searchTerm } = this.state;
     e.preventDefault();
-    const trimmedSearchTerm = searchTerm.trim().toLocaleLowerCase();
-    this.setState({ searchTerm: trimmedSearchTerm }, () => {
-      localStorage.setItem('searchTerm', trimmedSearchTerm);
+    const trimmedValue = searchTerm.trim().toLowerCase();
+    const localStorageValue = localStorage.getItem('searchTerm');
+
+    if (trimmedValue === localStorageValue) {
+      return;
+    }
+
+    this.setState({ searchTerm: trimmedValue }, () => {
+      localStorage.setItem('searchTerm', trimmedValue);
       this.getPokemons();
     });
   };
