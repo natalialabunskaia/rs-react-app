@@ -9,6 +9,7 @@ export type AppState = {
   results: PokemonResult[];
   requestStatus: string;
   error: string | null;
+  errorBoundaryKey: number
 };
 
 export type ItemPokemon = {
@@ -34,4 +35,16 @@ export type SearchProps = {
 export type SearchStatusProps = {
   requestStatus: string;
   error: string;
+};
+
+export type CrashButtonState = {
+  error: null | number;
+};
+
+export type ErrorBoundaryProps = {
+  children: React.ReactNode;
+};
+
+export type ErrorBoundaryState = {
+  hasError: boolean;
 };

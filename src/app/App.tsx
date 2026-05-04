@@ -10,6 +10,8 @@ import type {
   ItemType,
 } from './utils/types';
 import SearchStatus from './components/SearchStatus';
+import { ErrorBoundary } from './components/ErrorBoundary';
+import { CrashButton } from './components/CrashButton';
 
 export default class App extends React.Component<object, AppState> {
   constructor(props: object) {
@@ -19,8 +21,15 @@ export default class App extends React.Component<object, AppState> {
       results: [],
       requestStatus: 'idle', // 'loading', 'success', 'error'
       error: null,
+      errorBoundaryKey: 0,
     };
   }
+
+  resetErrorBoundary = () => {
+    this.setState((prevState) => ({
+      errorBoundaryKey: prevState.errorBoundaryKey + 1,
+    }));
+  };
 
   getPokemons = async () => {
     const { searchTerm } = this.state;
@@ -61,21 +70,22 @@ export default class App extends React.Component<object, AppState> {
     }
     const results: PokemonResult[] = [];
     for (const url of urls) {
-     try { const res = await axios.get(url);
-      const description = `Pokemon weight: ${res.data.weight} kg \n Pokemon height: ${res.data.height} m`;
-      const pokemon = {
-        name: res.data.name,
-        imgUrl: res.data.sprites.front_default,
-        description,
-      };
-      results.push(pokemon);
-    } catch (error) {
-      this.setState({
-        error: getErrorMessage(error.code),
-        requestStatus: 'error'
-      });
-      return;
-    }
+      try {
+        const res = await axios.get(url);
+        const description = `Pokemon weight: ${res.data.weight} kg \n Pokemon height: ${res.data.height} m`;
+        const pokemon = {
+          name: res.data.name,
+          imgUrl: res.data.sprites.front_default,
+          description,
+        };
+        results.push(pokemon);
+      } catch (error) {
+        this.setState({
+          error: getErrorMessage(error.code),
+          requestStatus: 'error',
+        });
+        return;
+      }
     }
     this.setState({ results, requestStatus: 'success', error: null });
   };
@@ -96,6 +106,7 @@ export default class App extends React.Component<object, AppState> {
 
     this.setState({ searchTerm: trimmedValue }, () => {
       localStorage.setItem('searchTerm', trimmedValue);
+      this.resetErrorBoundary();
       this.getPokemons();
     });
   };
@@ -119,10 +130,13 @@ export default class App extends React.Component<object, AppState> {
             error={this.state.error}
           ></SearchStatus>
         </section>
-        <Results
-          pokemons={this.state.results}
-          searchTerm={this.state.searchTerm}
-        />
+        <ErrorBoundary key={this.state.errorBoundaryKey}>
+          <Results
+            pokemons={this.state.results}
+            searchTerm={this.state.searchTerm}
+          />
+          <CrashButton />
+        </ErrorBoundary>
       </main>
     );
   }
