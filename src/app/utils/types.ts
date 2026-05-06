@@ -8,7 +8,7 @@ export type AppState = {
   searchTerm: string;
   results: PokemonResult[];
   requestStatus: string;
-  error: string | null;
+  error: string;
   errorBoundaryKey: number
 };
 
