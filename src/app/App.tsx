@@ -20,7 +20,7 @@ export default class App extends React.Component<object, AppState> {
       searchTerm: localStorage.getItem('searchTerm') || '',
       results: [],
       requestStatus: 'idle', // 'loading', 'success', 'error'
-      error: null,
+      error: '',
       errorBoundaryKey: 0,
     };
   }
@@ -36,7 +36,7 @@ export default class App extends React.Component<object, AppState> {
 
     this.setState({
       requestStatus: 'loading',
-      error: null,
+      error: '',
     });
 
     let urls: string[] = [];
@@ -47,11 +47,15 @@ export default class App extends React.Component<object, AppState> {
         const res = await axios.get(path);
         urls = res.data.results.map((item: ItemPokemon) => item.url);
       } catch (error) {
-        this.setState({
-          error: getErrorMessage(error.code),
-          requestStatus: 'error',
-        });
-        return;
+        if (axios.isAxiosError(error)) {
+          this.setState({
+            error: getErrorMessage(error),
+            requestStatus: 'error',
+          });
+          return;
+        } else {
+          console.error('Unknown error', error);
+        }
       }
     } else {
       const path = `https://pokeapi.co/api/v2/type/${searchTerm}`;
@@ -61,11 +65,15 @@ export default class App extends React.Component<object, AppState> {
           .slice(0, 20)
           .map((item: ItemType) => item.pokemon.url);
       } catch (error) {
-        this.setState({
-          error: getErrorMessage(error.code),
-          requestStatus: 'error',
-        });
-        return;
+        if (axios.isAxiosError(error)) {
+          this.setState({
+            error: getErrorMessage(error),
+            requestStatus: 'error',
+          });
+          return;
+        } else {
+          console.error('Unknown error', error);
+        }
       }
     }
     const results: PokemonResult[] = [];
@@ -80,14 +88,18 @@ export default class App extends React.Component<object, AppState> {
         };
         results.push(pokemon);
       } catch (error) {
-        this.setState({
-          error: getErrorMessage(error.code),
+        if (axios.isAxiosError(error)) {
+          this.setState({
+          error: getErrorMessage(error),
           requestStatus: 'error',
         });
         return;
+      } else {
+        console.error('Unknown error', error)
+      }
       }
     }
-    this.setState({ results, requestStatus: 'success', error: null });
+    this.setState({ results, requestStatus: 'success', error: '' });
   };
 
   handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
