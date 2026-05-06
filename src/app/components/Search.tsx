@@ -15,7 +15,6 @@ export default class Search extends React.Component<SearchProps> {
                   id="type-input"
                   autoFocus
                   type="text"
-                  required
                   name="pokemon-type"
                   aria-label="pokemon-type"
                   className="form-control w-100"
