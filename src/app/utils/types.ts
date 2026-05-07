@@ -1,4 +1,4 @@
-export type PokemonResult = {
+export type PokemonDescription = {
   name: string;
   imgUrl: string;
   description: string;
@@ -6,7 +6,7 @@ export type PokemonResult = {
 
 export type AppState = {
   searchTerm: string;
-  results: PokemonResult[];
+  results: PokemonDescription[];
   requestStatus: string;
   error: string;
   errorBoundaryKey: number
@@ -14,6 +14,7 @@ export type AppState = {
 
 export type ItemPokemon = {
   url: string;
+  name: string
 };
 
 export type ItemType = {
@@ -21,7 +22,7 @@ export type ItemType = {
 };
 
 export type ResultProps = {
-  pokemons: PokemonResult[];
+  pokemons: PokemonDescription[];
   searchTerm: string;
 };
 
