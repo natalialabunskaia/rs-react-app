@@ -1,17 +1,12 @@
 import React from 'react';
 import Search from './components/Search';
 import Results from './components/Results';
-import axios from 'axios';
 import getErrorMessage from './utils/getErrorMessage';
-import type {
-  AppState,
-  PokemonResult,
-  ItemPokemon,
-  ItemType,
-} from './utils/types';
+import type { AppState } from './utils/types';
 import SearchStatus from './components/SearchStatus';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { CrashButton } from './components/CrashButton';
+import { pokeApiService } from './service/pokeApiService';
 
 export default class App extends React.Component<object, AppState> {
   constructor(props: object) {
@@ -19,7 +14,7 @@ export default class App extends React.Component<object, AppState> {
     this.state = {
       searchTerm: localStorage.getItem('searchTerm') || '',
       results: [],
-      requestStatus: 'idle', // 'loading', 'success', 'error'
+      requestStatus: 'idle',
       error: '',
       errorBoundaryKey: 0,
     };
@@ -39,67 +34,16 @@ export default class App extends React.Component<object, AppState> {
       error: '',
     });
 
-    let urls: string[] = [];
-
-    if (!searchTerm) {
-      const path = 'https://pokeapi.co/api/v2/pokemon/?limit=20&offset=0';
-      try {
-        const res = await axios.get(path);
-        urls = res.data.results.map((item: ItemPokemon) => item.url);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          this.setState({
-            error: getErrorMessage(error),
-            requestStatus: 'error',
-          });
-          return;
-        } else {
-          console.error('Unknown error', error);
-        }
-      }
-    } else {
-      const path = `https://pokeapi.co/api/v2/type/${searchTerm}`;
-      try {
-        const res = await axios.get(path);
-        urls = res.data.pokemon
-          .slice(0, 20)
-          .map((item: ItemType) => item.pokemon.url);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          this.setState({
-            error: getErrorMessage(error),
-            requestStatus: 'error',
-          });
-          return;
-        } else {
-          console.error('Unknown error', error);
-        }
-      }
+    try {
+      const names = await pokeApiService.getBySearchTerm(searchTerm);
+      const results = await pokeApiService.getPokemonDescription(names);
+      this.setState({ results, requestStatus: 'success', error: '' });
+    } catch (error) {
+      this.setState({
+        error: getErrorMessage(error),
+        requestStatus: 'error',
+      });
     }
-    const results: PokemonResult[] = [];
-    for (const url of urls) {
-      try {
-        const res = await axios.get(url);
-        const description = `Pokemon weight: ${res.data.weight} kg \n Pokemon height: ${res.data.height} m`;
-        const pokemon = {
-          name: res.data.name,
-          imgUrl: res.data.sprites.front_default,
-          description,
-        };
-        results.push(pokemon);
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          this.setState({
-          error: getErrorMessage(error),
-          requestStatus: 'error',
-        });
-        return;
-      } else {
-        console.error('Unknown error', error)
-      }
-      }
-    }
-    this.setState({ results, requestStatus: 'success', error: '' });
   };
 
   handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
