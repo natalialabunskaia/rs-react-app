@@ -1,6 +1,6 @@
 import { pokemonApiClient } from '../api/pokemonApiClient';
 import { pokemonApiConfig } from '../config/api';
-import type { ItemPokemon, ItemType, PokemonDescription } from '../utils/types';
+import type { ItemPokemon, ItemType, PokemonDescription, PokemonApiData } from '../utils/types';
 
 export const pokeApiService = {
   getBySearchTerm: async (searchTerm: string) => {
@@ -16,11 +16,11 @@ export const pokeApiService = {
   getPokemonDescription: async (names: string[]) => {
     const results: PokemonDescription[] = [];
     for (const pokeName of names) {
-      const data = await pokemonApiClient.getPokemonByName(pokeName);
-      const pokemon = {
+      const data: PokemonApiData = await pokemonApiClient.getPokemonByName(pokeName);
+      const pokemon: PokemonDescription = {
         name: data.name,
         imgUrl: data.sprites.front_default,
-        description: data.description,
+        description: `type - ${data.types.map((slot) => slot.type.name).join(', ')}; weight - ${data.weight}; height - ${data.height}`
       };
       results.push(pokemon);
     }

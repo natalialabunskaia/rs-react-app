@@ -4,6 +4,24 @@ export type PokemonDescription = {
   description: string;
 };
 
+export type PokemonTypeSlot = {
+  slot: number;
+  type: {
+    name: string;
+    url: string;
+  };
+};
+
+export type PokemonApiData = {
+  name: string;
+  weight: number;
+  height: number;
+  sprites: {
+    front_default: string;
+  };
+  types: PokemonTypeSlot[];
+};
+
 export type AppState = {
   searchTerm: string;
   results: PokemonDescription[];
