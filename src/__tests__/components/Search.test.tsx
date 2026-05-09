@@ -10,7 +10,7 @@ afterEach(() => {
 describe('Rendering Tests', () => {
   it('should render Search input field', () => {
     render(
-      <Search searchTerm="" onChange={vi.fn()} onSubmit={vi.fn()} error="" />
+      <Search searchTerm="" onChange={vi.fn()} onSubmit={vi.fn()} />
     );
 
     const input = screen.getByLabelText('pokemon-type');
@@ -19,7 +19,7 @@ describe('Rendering Tests', () => {
 
   it('should render Search button', () => {
     render(
-      <Search searchTerm="" onChange={vi.fn()} onSubmit={vi.fn()} error="" />
+      <Search searchTerm="" onChange={vi.fn()} onSubmit={vi.fn()} />
     );
     const button = screen.getByLabelText('search');
     expect(button).toBeInTheDocument();
@@ -27,7 +27,7 @@ describe('Rendering Tests', () => {
 
   it('should render Example paragraph', () => {
     render(
-      <Search searchTerm="" onChange={vi.fn()} onSubmit={vi.fn()} error="" />
+      <Search searchTerm="" onChange={vi.fn()} onSubmit={vi.fn()} />
     );
     const paragraph = screen.getByText(/Example:/i);
     expect(paragraph).toBeInTheDocument();
@@ -40,7 +40,6 @@ describe('Rendering Tests', () => {
         searchTerm={searchTerm}
         onChange={vi.fn()}
         onSubmit={vi.fn()}
-        error=""
       />
     );
 
@@ -59,7 +58,6 @@ describe('User Interaction tests', () => {
         searchTerm=""
         onChange={handleChange}
         onSubmit={vi.fn()}
-        error=""
       />
     );
 
@@ -76,7 +74,6 @@ describe('User Interaction tests', () => {
         searchTerm=""
         onChange={vi.fn()}
         onSubmit={handleSubmit}
-        error=""
       />
     );
 

@@ -41,14 +41,12 @@ export type ItemType = {
 
 export type ResultProps = {
   pokemons: PokemonDescription[];
-  searchTerm: string;
 };
 
 export type SearchProps = {
   searchTerm: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSubmit: (e: React.SubmitEvent<HTMLFormElement>) => void;
-  error: string;
 };
 
 export type SearchStatusProps = {

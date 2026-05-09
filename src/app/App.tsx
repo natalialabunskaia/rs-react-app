@@ -37,7 +37,9 @@ export default class App extends React.Component<object, AppState> {
     try {
       const names = await pokeApiService.getBySearchTerm(searchTerm);
       const results = await pokeApiService.getPokemonDescription(names);
-      this.setState({ results, requestStatus: 'success', error: '' });
+      this.setState({ results, requestStatus: 'success', error: '' }, 
+        () => console.log(results)
+      );
     } catch (error) {
       this.setState({
         error: getErrorMessage(error),
@@ -79,7 +81,6 @@ export default class App extends React.Component<object, AppState> {
             searchTerm={this.state.searchTerm}
             onChange={this.handleChange}
             onSubmit={this.handleSubmit}
-            error={this.state.error}
           />
           <SearchStatus
             requestStatus={this.state.requestStatus}
@@ -89,7 +90,6 @@ export default class App extends React.Component<object, AppState> {
         <ErrorBoundary key={this.state.errorBoundaryKey}>
           <Results
             pokemons={this.state.results}
-            searchTerm={this.state.searchTerm}
           />
           <CrashButton />
         </ErrorBoundary>
