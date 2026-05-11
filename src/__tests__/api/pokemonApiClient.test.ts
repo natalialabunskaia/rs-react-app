@@ -6,9 +6,6 @@ vi.mock('axios');
 const mockedAxios = vi.mocked(axios);
 
 const mockAllPokemonsData = {
-  count: 1350,
-  next: 'https://pokeapi.co/api/v2/pokemon?offset=20&limit=20',
-  previous: null,
   results: [
     {
       name: 'bulbasaur',
@@ -22,34 +19,6 @@ const mockAllPokemonsData = {
 };
 
 const mockPokemonTypeData = {
-  id: 12,
-  name: 'grass',
-  damage_relations: {
-    double_damage_from: [
-      {
-        name: 'flying',
-        url: 'https://pokeapi.co/api/v2/type/3/',
-      },
-      {
-        name: 'fire',
-        url: 'https://pokeapi.co/api/v2/type/10/',
-      },
-    ],
-    double_damage_to: [
-      {
-        name: 'ground',
-        url: 'https://pokeapi.co/api/v2/type/5/',
-      },
-      {
-        name: 'water',
-        url: 'https://pokeapi.co/api/v2/type/11/',
-      },
-    ],
-    half_damage_from: [],
-    half_damage_to: [],
-    no_damage_from: [],
-    no_damage_to: [],
-  },
   pokemon: [
     {
       pokemon: {
@@ -69,34 +38,7 @@ const mockPokemonTypeData = {
 };
 
 const mockPokemonDetailsData = {
-  id: 1,
   name: 'bulbasaur',
-  height: 7,
-  base_experience: 64,
-  abilities: [
-    {
-      ability: {
-        name: 'overgrow',
-        url: 'https://pokeapi.co/api/v2/ability/65/',
-      },
-      is_hidden: false,
-      slot: 1,
-    },
-    {
-      ability: {
-        name: 'chlorophyll',
-        url: 'https://pokeapi.co/api/v2/ability/34/',
-      },
-      is_hidden: true,
-      slot: 3,
-    },
-  ],
-  forms: [
-    {
-      name: 'bulbasaur',
-      url: 'https://pokeapi.co/api/v2/pokemon-form/1/',
-    },
-  ],
 };
 
 afterEach(() => {
@@ -154,14 +96,16 @@ describe('pokemonApiClient.getPokemonByType', () => {
 describe('pokemonApiClient.getPokemonByName', () => {
   it('calls axios.get with the pokemon endpoint and provided pokemon name', async () => {
     mockedAxios.get.mockResolvedValue({ data: mockPokemonDetailsData });
-    await pokemonApiClient.getPokemonByName('bulbasaur');
+    await pokemonApiClient.getPokemonByName(mockPokemonDetailsData.name);
     expect(mockedAxios.get).toHaveBeenCalledWith(
       'https://pokeapi.co/api/v2/pokemon/bulbasaur'
     );
   });
   it('returns response data when the pokemon details request is successful', async () => {
     mockedAxios.get.mockResolvedValue({ data: mockPokemonDetailsData });
-    const result = await pokemonApiClient.getPokemonByName('bulbasaur');
+    const result = await pokemonApiClient.getPokemonByName(
+      mockPokemonDetailsData.name
+    );
     expect(result).toEqual(mockPokemonDetailsData);
   });
   it('rejects with an error when the pokemon details request fails', async () => {
