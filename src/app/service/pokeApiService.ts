@@ -24,7 +24,6 @@ export const pokeApiService = {
       };
       results.push(pokemon);
     }
-    console.log('pokeApi Service return normalized description:', results)
     return results;
   },
 };

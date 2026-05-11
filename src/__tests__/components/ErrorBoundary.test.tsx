@@ -36,14 +36,6 @@ const mockPokemons = [
   },
 ];
 
-// Crash flow: пользователь нажимает Crash app, ошибка логируется в console, вместо результатов появляется fallback UI
-// с текстом ошибки и кнопкой Try again.
-
-// App remains usable: после ошибки search input остаётся доступным, пользователь может менять значение в поле и
-// отправлять новый поиск.
-
-// Recovery flow: пользователь нажимает Try again, fallback UI исчезает, а область результатов снова отображается.
-
 class ErrorBoundaryChildWithError extends React.Component {
   render() {
     const shouldBeTrue = true;
