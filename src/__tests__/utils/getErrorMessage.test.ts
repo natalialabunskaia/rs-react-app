@@ -21,7 +21,7 @@ describe('getErrorMessage', () => {
     };
     expect(getErrorMessage(error)).toBe(badRequestErrorMessage);
   });
-  it('should retern default error message for unknown error', () => {
+  it('should return default error message for unknown error', () => {
     const defaultErrorMessage = 'Something went wrong. Please try again later.';
     const error = {
       isAxiosError: true,
@@ -29,7 +29,7 @@ describe('getErrorMessage', () => {
     };
     expect(getErrorMessage(error)).toBe(defaultErrorMessage);
   });
-  it('should retern default error message for non axios error', () => {
+  it('should return default error message for non axios error', () => {
     const defaultErrorMessage = 'Something went wrong. Please try again later.';
     const error = {
       isAxiosError: false,

@@ -1,12 +1,21 @@
 /// <reference types="vitest/config" />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import os from 'node:os';
+import path from 'node:path';
+import process from 'node:process';
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
   test: {
-    environment: 'jsdom',
+    globals: true,
+    // environment: 'jsdom',
+    environment: 'happy-dom',
+    execArgv: [
+      '--localstorage-file',
+      path.resolve(os.tmpdir(), `vitest-${process.pid}.localstorage`),
+    ],
     setupFiles: './src/setupTests.ts',
     coverage: {
       provider: 'v8',
