@@ -29,7 +29,7 @@ export class ErrorBoundary extends React.Component<
           <div className="alert alert-danger text-center" role="alert">
             <h2>Something went wrong</h2>
             <p>Please reload the page or try again later.</p>
-            <button onClick={this.handleClick} type="button" className="btn btn-primary">
+            <button onClick={this.handleClick} type="button" className="btn btn-primary" role='button'>
               Try again
             </button>
           </div>

@@ -6,6 +6,7 @@ export const pokemonApiClient = {
     const res = await axios.get(
       `${pokemonApiConfig.baseUrl}${pokemonApiConfig.endpoints.pokemon}?limit=${pokemonApiConfig.defaultLimit}&offset=${pokemonApiConfig.defaultOffset}`
     );
+    console.log('all res', res)
     return res.data;
   },
 

@@ -22,6 +22,7 @@ export class CrashButton extends React.Component<object, CrashButtonState> {
     return (
       <div className="d-grid gap-2 col-6 mx-auto my-5">
         <button
+          data-testid="crash-button"
           onClick={this.handleClick}
           type="button"
           className="btn btn-danger"
