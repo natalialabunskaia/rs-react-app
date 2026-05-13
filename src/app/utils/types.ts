@@ -3,6 +3,9 @@ export type PokemonDescription = {
   imgUrl: string;
   description: string;
 };
+export type PokemonCardProps = {
+  pokemon: PokemonDescription;
+};
 
 export type PokemonTypeSlot = {
   slot: number;
