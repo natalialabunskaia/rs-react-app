@@ -1,5 +1,5 @@
 import PokemonCard from './PokemonCard';
-import type { ResultProps, PokemonDescription} from '../utils/types';
+import type { ResultProps, PokemonDetails} from '../utils/types';
 
 const Results = ({ pokemons }: ResultProps) => {
   return (
@@ -8,7 +8,7 @@ const Results = ({ pokemons }: ResultProps) => {
       data-testid="results-container"
     >
       <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        {pokemons.map((pokemon: PokemonDescription) => (
+        {pokemons.map((pokemon: PokemonDetails) => (
           <PokemonCard key={pokemon.name} pokemon={pokemon} />
         ))}
       </div>

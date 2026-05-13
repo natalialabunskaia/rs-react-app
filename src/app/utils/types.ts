@@ -1,10 +1,10 @@
-export type PokemonDescription = {
+export type PokemonDetails = {
   name: string;
   imgUrl: string;
   description: string;
 };
 export type PokemonCardProps = {
-  pokemon: PokemonDescription;
+  pokemon: PokemonDetails;
 };
 
 export type PokemonTypeSlot = {
@@ -27,7 +27,7 @@ export type PokemonApiData = {
 
 export type AppState = {
   searchTerm: string;
-  results: PokemonDescription[];
+  results: PokemonDetails[];
   requestStatus: string;
   error: string;
   errorBoundaryKey: number
@@ -43,7 +43,7 @@ export type ItemType = {
 };
 
 export type ResultProps = {
-  pokemons: PokemonDescription[];
+  pokemons: PokemonDetails[];
 };
 
 export type SearchProps = {

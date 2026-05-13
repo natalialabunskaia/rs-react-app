@@ -36,7 +36,7 @@ export default class App extends React.Component<object, AppState> {
 
     try {
       const names = await pokeApiService.getBySearchTerm(searchTerm);
-      const results = await pokeApiService.getPokemonDescription(names);
+      const results = await pokeApiService.getPokemonDetails(names);
       this.setState({ results, requestStatus: 'success', error: '' }
       );
     } catch (error) {

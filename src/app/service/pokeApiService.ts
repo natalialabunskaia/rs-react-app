@@ -1,6 +1,11 @@
 import { pokemonApiClient } from '../api/pokemonApiClient';
 import { pokemonApiConfig } from '../config/api';
-import type { ItemPokemon, ItemType, PokemonDescription, PokemonApiData } from '../utils/types';
+import type {
+  ItemPokemon,
+  ItemType,
+  PokemonDetails,
+  PokemonApiData,
+} from '../utils/types';
 
 export const pokeApiService = {
   getBySearchTerm: async (searchTerm: string) => {
@@ -9,21 +14,32 @@ export const pokeApiService = {
       return data.results.map((item: ItemPokemon) => item.name);
     }
     const data = await pokemonApiClient.getPokemonByType(searchTerm);
-    return data.pokemon.slice(pokemonApiConfig.defaultOffset, pokemonApiConfig.defaultLimit)
+    return data.pokemon
+      .slice(pokemonApiConfig.defaultOffset, pokemonApiConfig.defaultLimit)
       .map((item: ItemType) => item.pokemon.name);
   },
 
-  getPokemonDescription: async (names: string[]) => {
-    const results: PokemonDescription[] = [];
-    for (const pokeName of names) {
-      const data: PokemonApiData = await pokemonApiClient.getPokemonByName(pokeName);
-      const pokemon: PokemonDescription = {
+  getPokemonDetails: async (names: string[]): Promise<PokemonDetails[]> => {
+    const promises = names.map((pokeName) =>
+      pokemonApiClient.getPokemonByName(pokeName)
+    );
+
+    const results = await Promise.allSettled(promises);
+
+    return results.map((result, index) => {
+      if (result.status === 'rejected') {
+        return {
+          name: names[index],
+          imgUrl: '',
+          description: 'Failed to fetch details',
+        };
+      }
+      const data: PokemonApiData = result.value;
+      return {
         name: data.name,
         imgUrl: data.sprites.front_default,
-        description: `type - ${data.types.map((slot) => slot.type.name).join(', ')}; weight - ${data.weight}; height - ${data.height}`
+        description: `type - ${data.types.map((slot) => slot.type.name).join(', ')}; weight - ${data.weight}; height - ${data.height}`,
       };
-      results.push(pokemon);
-    }
-    return results;
+    });
   },
 };

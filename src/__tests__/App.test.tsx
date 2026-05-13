@@ -7,7 +7,7 @@ import userEvent from '@testing-library/user-event';
 vi.mock('../app/service/pokeApiService', () => ({
   pokeApiService: {
     getBySearchTerm: vi.fn(),
-    getPokemonDescription: vi.fn(),
+    getPokemonDetails: vi.fn(),
   },
 }));
 
@@ -16,7 +16,7 @@ describe('localStorage tests', () => {
     localStorage.clear();
     vi.clearAllMocks();
     vi.mocked(pokeApiService.getBySearchTerm).mockResolvedValue([]);
-    vi.mocked(pokeApiService.getPokemonDescription).mockResolvedValue([]);
+    vi.mocked(pokeApiService.getPokemonDetails).mockResolvedValue([]);
   });
 
   it('renders empty search input when localStorage is empty', () => {

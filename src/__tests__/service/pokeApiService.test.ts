@@ -231,6 +231,20 @@ const mockPokemonDescription = [
     description: 'type - grass, poison; weight - 130; height - 10',
   },
 ];
+
+const mockPokemonDescriptionWithErrorInCard = [
+  {
+    name: 'bulbasaur',
+    imgUrl: '',
+    description: 'Failed to fetch details',
+  },
+  {
+    name: 'ivysaur',
+    imgUrl: '',
+    description: 'Failed to fetch details',
+  },
+];
+
 afterEach(() => {
   vi.clearAllMocks();
 });
@@ -267,12 +281,12 @@ describe('pokeApiService.getBySearchTerm', () => {
   });
 });
 
-describe('pokeApiService.getPokemonDescription', () => {
+describe('pokeApiService.getPokemonDetails', () => {
   it('calls getPokemonByName for each pokemon name', async () => {
     vi.mocked(pokemonApiClient.getPokemonByName)
       .mockResolvedValueOnce(mockBulbasaurData)
       .mockResolvedValueOnce(mockIvysaurData);
-    await pokeApiService.getPokemonDescription(mockNames);
+    await pokeApiService.getPokemonDetails(mockNames);
     expect(pokemonApiClient.getPokemonByName).toHaveBeenCalledTimes(
       mockNames.length
     );
@@ -284,21 +298,22 @@ describe('pokeApiService.getPokemonDescription', () => {
     vi.mocked(pokemonApiClient.getPokemonByName)
       .mockResolvedValueOnce(mockBulbasaurData)
       .mockResolvedValueOnce(mockIvysaurData);
-    const result = await pokeApiService.getPokemonDescription(mockNames);
+    const result = await pokeApiService.getPokemonDetails(mockNames);
     expect(result).toEqual(mockPokemonDescription);
   });
 
   it('returns empty array when names array is empty', async () => {
     vi.mocked(pokemonApiClient.getPokemonByName).mockResolvedValue([]);
-    const result = await pokeApiService.getPokemonDescription([]);
+    const result = await pokeApiService.getPokemonDetails([]);
     expect(result).toEqual([]);
     expect(pokemonApiClient.getPokemonByName).not.toHaveBeenCalled();
   });
-  it('rejects when getPokemonByName fails', async () => {
+
+  it('shows error message in description when getPokemonByName fails', async () => {
     const error = new Error('failed request');
     vi.mocked(pokemonApiClient.getPokemonByName).mockRejectedValue(error);
     await expect(
-      pokeApiService.getPokemonDescription(mockNames)
-    ).rejects.toThrow('failed request');
+      pokeApiService.getPokemonDetails(mockNames)
+    ).resolves.toEqual(mockPokemonDescriptionWithErrorInCard);
   });
 });
