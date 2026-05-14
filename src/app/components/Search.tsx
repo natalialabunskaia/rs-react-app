@@ -1,9 +1,6 @@
-import React from 'react';
 import type { SearchProps } from '../utils/types';
 
-export default class Search extends React.Component<SearchProps> {
-  render() {
-    const { searchTerm, onChange, onSubmit } = this.props;
+const Search = ({ searchTerm, onChange, onSubmit }: SearchProps) => {
 
     return (
       <>
@@ -43,4 +40,5 @@ export default class Search extends React.Component<SearchProps> {
       </>
     );
   }
-}
+
+  export default Search;

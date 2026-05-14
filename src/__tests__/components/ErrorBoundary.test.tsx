@@ -9,7 +9,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import { ErrorBoundary } from '../../app/components/ErrorBoundary';
 import Results from '../../app/components/Results';
-import { CrashButton } from '../../app/components/CrashButton';
+import CrashButton from '../../app/components/CrashButton';
 
 afterEach(() => {
   cleanup();

@@ -1,58 +1,47 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import Search from './components/Search';
 import Results from './components/Results';
 import getErrorMessage from './utils/getErrorMessage';
-import type { AppState } from './utils/types';
 import SearchStatus from './components/SearchStatus';
 import { ErrorBoundary } from './components/ErrorBoundary';
-import { CrashButton } from './components/CrashButton';
+import CrashButton from './components/CrashButton';
 import { pokeApiService } from './service/pokeApiService';
+import type { PokemonDetails } from './utils/types';
 
-export default class App extends React.Component<object, AppState> {
-  constructor(props: object) {
-    super(props);
-    this.state = {
-      searchTerm: localStorage.getItem('searchTerm') || '',
-      results: [],
-      requestStatus: 'idle',
-      error: '',
-      errorBoundaryKey: 0,
-    };
-  }
+const App = () => {
+  const [searchTerm, setSearchTerm] = useState(
+    localStorage.getItem('searchTerm') || ''
+  );
+  const [results, setResults] = useState<PokemonDetails[]>([]);
+  const [requestStatus, setRequestStatus] = useState('idle');
+  const [error, setError] = useState('');
+  const [errorBoundaryKey, setErrorBoundaryKey] = useState(0);
 
-  resetErrorBoundary = () => {
-    this.setState((prevState) => ({
-      errorBoundaryKey: prevState.errorBoundaryKey + 1,
-    }));
+  const resetErrorBoundary = () => {
+    setErrorBoundaryKey((prevState) => prevState + 1);
   };
 
-  getPokemons = async () => {
-    const { searchTerm } = this.state;
-
-    this.setState({
-      requestStatus: 'loading',
-      error: '',
-    });
+  const getPokemons = async (term: string) => {
+    setRequestStatus('loading');
+    setError('');
 
     try {
-      const names = await pokeApiService.getBySearchTerm(searchTerm);
+      const names = await pokeApiService.getBySearchTerm(term);
       const results = await pokeApiService.getPokemonDetails(names);
-      this.setState({ results, requestStatus: 'success', error: '' }
-      );
+      setResults(results);
+      setRequestStatus('success');
+      setError('');
     } catch (error) {
-      this.setState({
-        error: getErrorMessage(error),
-        requestStatus: 'error',
-      });
+      setError(getErrorMessage(error));
+      setRequestStatus('error');
     }
   };
 
-  handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchTerm: e.target.value });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
   };
 
-  handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
-    const { searchTerm } = this.state;
+  const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const trimmedValue = searchTerm.trim().toLowerCase();
     const localStorageValue = localStorage.getItem('searchTerm');
@@ -61,38 +50,37 @@ export default class App extends React.Component<object, AppState> {
       return;
     }
 
-    this.setState({ searchTerm: trimmedValue }, () => {
-      localStorage.setItem('searchTerm', trimmedValue);
-      this.resetErrorBoundary();
-      this.getPokemons();
-    });
+    setSearchTerm(trimmedValue);
+    localStorage.setItem('searchTerm', trimmedValue);
+    resetErrorBoundary();
+    getPokemons(trimmedValue);
   };
 
-  componentDidMount(): void {
-    this.getPokemons();
-  }
+  useEffect(() => {
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+    getPokemons(searchTerm);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  render() {
-    return (
-      <main>
-        <section className="container-fluid bg-dark text-white p-5">
-          <Search
-            searchTerm={this.state.searchTerm}
-            onChange={this.handleChange}
-            onSubmit={this.handleSubmit}
-          />
-          <SearchStatus
-            requestStatus={this.state.requestStatus}
-            error={this.state.error}
-          ></SearchStatus>
-        </section>
-        <ErrorBoundary key={this.state.errorBoundaryKey}>
-          <Results
-            pokemons={this.state.results}
-          />
-          <CrashButton />
-        </ErrorBoundary>
-      </main>
-    );
-  }
-}
+  return (
+    <main>
+      <section className="container-fluid bg-dark text-white p-5">
+        <Search
+          searchTerm={searchTerm}
+          onChange={handleChange}
+          onSubmit={handleSubmit}
+        />
+        <SearchStatus
+          requestStatus={requestStatus}
+          error={error}
+        ></SearchStatus>
+      </section>
+      <ErrorBoundary key={errorBoundaryKey}>
+        <Results pokemons={results} />
+        <CrashButton />
+      </ErrorBoundary>
+    </main>
+  );
+};
+
+export default App;

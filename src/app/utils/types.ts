@@ -25,14 +25,6 @@ export type PokemonApiData = {
   types: PokemonTypeSlot[];
 };
 
-export type AppState = {
-  searchTerm: string;
-  results: PokemonDetails[];
-  requestStatus: string;
-  error: string;
-  errorBoundaryKey: number
-};
-
 export type ItemPokemon = {
   url: string;
   name: string
@@ -55,10 +47,6 @@ export type SearchProps = {
 export type SearchStatusProps = {
   requestStatus: string;
   error: string;
-};
-
-export type CrashButtonState = {
-  error: null | number;
 };
 
 export type ErrorBoundaryProps = {
