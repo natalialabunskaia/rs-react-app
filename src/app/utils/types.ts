@@ -56,3 +56,5 @@ export type ErrorBoundaryProps = {
 export type ErrorBoundaryState = {
   hasError: boolean;
 };
+
+export type RequestStatus = 'idle' | 'loading' | 'success' | 'error';

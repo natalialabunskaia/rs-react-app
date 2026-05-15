@@ -1,5 +1,5 @@
 import { it, describe, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import App from '../app/App';
 import { pokeApiService } from '../app/service/pokeApiService';
 import userEvent from '@testing-library/user-event';
@@ -11,13 +11,26 @@ vi.mock('../app/service/pokeApiService', () => ({
   },
 }));
 
-describe('localStorage tests', () => {
   beforeEach(() => {
     localStorage.clear();
     vi.clearAllMocks();
     vi.mocked(pokeApiService.getBySearchTerm).mockResolvedValue([]);
     vi.mocked(pokeApiService.getPokemonDetails).mockResolvedValue([]);
   });
+
+describe('App initial tests', () => {
+  it('If localStorage is empty, Api is called with all pokemons on initial load', async () => {
+
+    render(<App />);
+
+    await waitFor(() => {
+      expect(pokeApiService.getBySearchTerm).toHaveBeenCalledWith('');
+    });
+  });
+});
+
+describe('localStorage tests', () => {
+
 
   it('renders empty search input when localStorage is empty', () => {
     render(<App />);

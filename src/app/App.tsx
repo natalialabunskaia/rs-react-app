@@ -1,41 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useLocalStorage } from './hooks/useLocalStorage';
+import { usePokemonsData } from './hooks/usePokemonsData';
 import Search from './components/Search';
 import Results from './components/Results';
-import getErrorMessage from './utils/getErrorMessage';
 import SearchStatus from './components/SearchStatus';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import CrashButton from './components/CrashButton';
-import { pokeApiService } from './service/pokeApiService';
-import type { PokemonDetails } from './utils/types';
 
 const App = () => {
   const { getValue, setValue } = useLocalStorage('searchTerm');
-  const [searchTerm, setSearchTerm] = useState(getValue() || ''
-  );
-  const [results, setResults] = useState<PokemonDetails[]>([]);
-  const [requestStatus, setRequestStatus] = useState('idle');
-  const [error, setError] = useState('');
+  const { getPokemons, results, requestStatus, error } = usePokemonsData();
+
+  const [searchTerm, setSearchTerm] = useState(getValue() || '');
   const [errorBoundaryKey, setErrorBoundaryKey] = useState(0);
 
   const resetErrorBoundary = () => {
     setErrorBoundaryKey((prevState) => prevState + 1);
-  };
-
-  const getPokemons = async (term: string) => {
-    setRequestStatus('loading');
-    setError('');
-
-    try {
-      const names = await pokeApiService.getBySearchTerm(term);
-      const results = await pokeApiService.getPokemonDetails(names);
-      setResults(results);
-      setRequestStatus('success');
-      setError('');
-    } catch (error) {
-      setError(getErrorMessage(error));
-      setRequestStatus('error');
-    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,9 +38,9 @@ const App = () => {
   };
 
   useEffect(() => {
-  // eslint-disable-next-line react-hooks/set-state-in-effect
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     getPokemons(searchTerm);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
