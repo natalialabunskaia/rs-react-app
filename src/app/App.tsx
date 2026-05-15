@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLocalStorage } from './hooks/useLocalStorage';
 import Search from './components/Search';
 import Results from './components/Results';
 import getErrorMessage from './utils/getErrorMessage';
@@ -9,8 +10,8 @@ import { pokeApiService } from './service/pokeApiService';
 import type { PokemonDetails } from './utils/types';
 
 const App = () => {
-  const [searchTerm, setSearchTerm] = useState(
-    localStorage.getItem('searchTerm') || ''
+  const { getValue, setValue } = useLocalStorage('searchTerm');
+  const [searchTerm, setSearchTerm] = useState(getValue() || ''
   );
   const [results, setResults] = useState<PokemonDetails[]>([]);
   const [requestStatus, setRequestStatus] = useState('idle');
@@ -44,14 +45,14 @@ const App = () => {
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const trimmedValue = searchTerm.trim().toLowerCase();
-    const localStorageValue = localStorage.getItem('searchTerm');
+    const localStorageValue = getValue();
 
     if (trimmedValue === localStorageValue) {
       return;
     }
 
     setSearchTerm(trimmedValue);
-    localStorage.setItem('searchTerm', trimmedValue);
+    setValue(trimmedValue);
     resetErrorBoundary();
     getPokemons(trimmedValue);
   };
