@@ -1,6 +1,5 @@
 import type { PokemonCardProps } from '../utils/types';
 
-
 const PokemonCard = ({ pokemon }: PokemonCardProps) => {
   const { name, imgUrl, description } = pokemon;
 
@@ -11,6 +10,9 @@ const PokemonCard = ({ pokemon }: PokemonCardProps) => {
           <img src={imgUrl} alt={name} className="card-img-top" />
           <h5 className="card-title text-capitalize">Name: {name}</h5>
           <p className="card-text">Description: {description}</p>
+          <a href="#" className="btn btn-primary">
+            Pokemon Details
+          </a>
         </div>
       </div>
     </div>

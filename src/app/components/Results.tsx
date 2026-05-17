@@ -1,5 +1,5 @@
-import PokemonCard from './PokemonCard';
-import type { ResultProps, PokemonDetails } from '../utils/types';
+import PokemonList from './PokemonList';
+import type { ResultProps } from '../utils/types';
 import { Pagination } from './Pagination';
 
 const Results = ({ pokemons, status }: ResultProps) => {
@@ -9,11 +9,7 @@ const Results = ({ pokemons, status }: ResultProps) => {
       data-testid="results-container"
     >
       <Pagination status={status} />
-      <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 my-4">
-        {pokemons.map((pokemon: PokemonDetails) => (
-          <PokemonCard key={pokemon.name} pokemon={pokemon} />
-        ))}
-      </div>
+       <PokemonList pokemons={pokemons} />
       <Pagination status={status} />
     </section>
   );
