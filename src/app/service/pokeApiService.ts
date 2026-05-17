@@ -38,7 +38,8 @@ export const pokeApiService = {
       return {
         name: data.name,
         imgUrl: data.sprites.front_default,
-        description: `type - ${data.types.map((slot) => slot.type.name).join(', ')}; weight - ${data.weight}; height - ${data.height}`,
+        description: `${data.types.map((slot) => slot.type.name).join(', ')}`,
+        details: `Height: ${data.height}, Weight: ${data.weight}`,
       };
     });
   },

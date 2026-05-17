@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
-import { useLocalStorage } from '../hooks/useLocalStorage';
-import { usePokemonsData } from '../hooks/usePokemonsData';
-import Search from '../components/Search';
-import Results from '../components/Results';
-import Spinner from '../components/Spinner';
-import { ErrorBoundary } from '../components/ErrorBoundary';
-import CrashButton from '../components/CrashButton';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { usePokemonsData } from '../../hooks/usePokemonsData';
+import Search from '../../components/Search';
+import Results from '../../components/Results';
+import Spinner from '../../components/Spinner';
+import { ErrorBoundary } from '../../components/ErrorBoundary';
+import CrashButton from '../../components/CrashButton';
+import { Outlet } from 'react-router';
 
 export const HomePage = () => {
-    const { getValue, setValue } = useLocalStorage('searchTerm');
+  const { getValue, setValue } = useLocalStorage('searchTerm');
   const { getPokemons, results, requestStatus, error } = usePokemonsData();
 
   const [searchTerm, setSearchTerm] = useState(getValue() || '');
@@ -50,15 +51,21 @@ export const HomePage = () => {
           onChange={handleChange}
           onSubmit={handleSubmit}
         />
-        <Spinner
-          requestStatus={requestStatus}
-          error={error}
-        ></Spinner>
+        <Spinner requestStatus={requestStatus} error={error}></Spinner>
       </section>
-      <ErrorBoundary key={errorBoundaryKey}>
-        <Results pokemons={results} status={requestStatus} />
-        <CrashButton />
-      </ErrorBoundary>
+      <div className="container-fluid">
+        <div className="row">
+          <section className="col-8">
+            <ErrorBoundary key={errorBoundaryKey}>
+              <Results pokemons={results} status={requestStatus} />
+              <CrashButton />
+            </ErrorBoundary>
+          </section>
+          <aside className="col-4 py-5">
+            <Outlet context={{ pokemons: results }} />
+          </aside>
+        </div>
+      </div>
     </main>
   );
 };

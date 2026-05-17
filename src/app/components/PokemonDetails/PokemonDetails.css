@@ -1,0 +1,14 @@
+.pokemon-details {
+  padding: 24px;
+  position: sticky;
+  top: 24px;
+  align-self: flex-start;
+}
+
+.about-pokemon {
+  background-color: white;
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid lightgrey;
+  text-align: center;
+}
