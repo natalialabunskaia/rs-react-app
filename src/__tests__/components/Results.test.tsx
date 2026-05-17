@@ -29,19 +29,19 @@ const mockPokemons = [
 
 describe('Rendering Tests', () => {
   it('should render Results component', () => {
-    render(<Results pokemons={mockPokemons} />);
+    render(<Results pokemons={mockPokemons} status='success' />);
     const resultsContainer = screen.getByTestId('results-container');
     expect(resultsContainer).toBeInTheDocument();
   });
 
   it('should render one card for each pokemon', () => {
-    render(<Results pokemons={mockPokemons} />);
+    render(<Results pokemons={mockPokemons} status='success'  />);
     const pokemonCards = screen.getAllByTestId('pokemon-card');
     expect(pokemonCards).toHaveLength(mockPokemons.length);
   });
 
   it('each card displays pokemon name', () => {
-    render(<Results pokemons={mockPokemons} />);
+    render(<Results pokemons={mockPokemons} status='success'  />);
     const pokemonCards = screen.getAllByTestId('pokemon-card');
     pokemonCards.forEach((pokemonCard, index) => {
       expect(
@@ -50,7 +50,7 @@ describe('Rendering Tests', () => {
     });
   });
   it('each card displays pokemon description', () => {
-    render(<Results pokemons={mockPokemons} />);
+    render(<Results pokemons={mockPokemons} status='success'  />);
     const pokemonCards = screen.getAllByTestId('pokemon-card');
     pokemonCards.forEach((pokemonCard, index) => {
       expect(
@@ -61,7 +61,7 @@ describe('Rendering Tests', () => {
     });
   });
   it('each card displays pokemon image', () => {
-    render(<Results pokemons={mockPokemons} />);
+    render(<Results pokemons={mockPokemons} status='success'  />);
     const pokemonCards = screen.getAllByTestId('pokemon-card');
     pokemonCards.forEach((pokemonCard, index) => {
       const image = within(pokemonCard).getByRole('img', {

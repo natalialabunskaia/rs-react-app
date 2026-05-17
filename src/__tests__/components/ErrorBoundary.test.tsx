@@ -92,7 +92,7 @@ describe('User Interaction tests', () => {
   it('renders fallback UI after clicking CrashButton', async () => {
     render(
       <ErrorBoundary>
-        <Results pokemons={mockPokemons} />
+        <Results pokemons={mockPokemons} status='success' />
         <CrashButton />
       </ErrorBoundary>
     );
@@ -107,7 +107,7 @@ describe('User Interaction tests', () => {
   it('restores children after clicking reset button inside fallback UI', async () => {
     render(
       <ErrorBoundary>
-        <Results pokemons={mockPokemons} />
+        <Results pokemons={mockPokemons} status='success' />
         <CrashButton />
       </ErrorBoundary>
     );

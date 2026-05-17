@@ -27,7 +27,7 @@ export type PokemonApiData = {
 
 export type ItemPokemon = {
   url: string;
-  name: string
+  name: string;
 };
 
 export type ItemType = {
@@ -36,6 +36,12 @@ export type ItemType = {
 
 export type ResultProps = {
   pokemons: PokemonDetails[];
+  status: RequestStatus;
+};
+export type RequestStatus = 'idle' | 'loading' | 'success' | 'error';
+
+export type RequestStatusProps = {
+  status: RequestStatus;
 };
 
 export type SearchProps = {
@@ -56,5 +62,3 @@ export type ErrorBoundaryProps = {
 export type ErrorBoundaryState = {
   hasError: boolean;
 };
-
-export type RequestStatus = 'idle' | 'loading' | 'success' | 'error';

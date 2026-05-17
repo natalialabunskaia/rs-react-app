@@ -1,6 +1,6 @@
 import type { SearchStatusProps } from '../utils/types';
 
-const SearchStatus  = ({requestStatus, error }: SearchStatusProps) => {
+const Spinner  = ({requestStatus, error }: SearchStatusProps) => {
 
     if (requestStatus === 'loading') {
       return (
@@ -16,4 +16,4 @@ const SearchStatus  = ({requestStatus, error }: SearchStatusProps) => {
     return null;
   }
 
-export default SearchStatus;
+export default Spinner;
