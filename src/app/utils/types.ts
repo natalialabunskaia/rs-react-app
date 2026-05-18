@@ -1,10 +1,11 @@
-export type PokemonDetails = {
+export type PokemonDetailsType = {
   name: string;
   imgUrl: string;
   description: string;
+  details?: string;
 };
 export type PokemonCardProps = {
-  pokemon: PokemonDetails;
+  pokemon: PokemonDetailsType;
 };
 
 export type PokemonTypeSlot = {
@@ -35,7 +36,7 @@ export type ItemType = {
 };
 
 export type ResultProps = {
-  pokemons: PokemonDetails[];
+  pokemons: PokemonDetailsType[];
   status: RequestStatus;
 };
 export type RequestStatus = 'idle' | 'loading' | 'success' | 'error';

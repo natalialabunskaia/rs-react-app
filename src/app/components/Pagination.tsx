@@ -1,40 +1,51 @@
-import type { RequestStatusProps } from "../utils/types";
+  import { useSearchParams } from 'react-router';
+  import type { RequestStatusProps } from '../utils/types';
+  import type { MouseEvent } from 'react';
 
-export const Pagination = ({status}: RequestStatusProps) => {
-  if (status ===  'success') {
+  export const Pagination = ({ status }: RequestStatusProps) => {
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const page = Number(searchParams.get('page'));
+
+    const handleClickNext = (event: MouseEvent<HTMLAnchorElement>) => {
+      event.preventDefault();
+      setSearchParams({ page: String(page + 1) });
+    };
+
+    const handleClickPrev = (event: MouseEvent<HTMLAnchorElement>) => {
+      event.preventDefault();
+      if (page > 1) {
+        setSearchParams({ page: String(page - 1) });
+      }
+    };
+
+    if (status !== 'success') {
+      return null;
+    }
     return (
-      
       <nav aria-label="Page navigation">
         <ul className="pagination">
           <li className="page-item">
-            <a className="page-link" href="#" aria-label="Previous">
+            <a
+              onClick={handleClickPrev}
+              className="page-link"
+              href="#"
+              aria-label="Previous"
+            >
               <span aria-hidden="true">&laquo;</span>
             </a>
           </li>
           <li className="page-item">
-            <a className="page-link" href="#">
-              1
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="#">
-              2
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="#">
-              3
-            </a>
-          </li>
-          <li className="page-item">
-            <a className="page-link" href="#" aria-label="Next">
+            <a
+              onClick={handleClickNext}
+              className="page-link"
+              href="#"
+              aria-label="Next"
+            >
               <span aria-hidden="true">&raquo;</span>
             </a>
           </li>
         </ul>
       </nav>
     );
-  }
-
-  return null;
-};
+  };

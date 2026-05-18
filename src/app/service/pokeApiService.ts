@@ -3,23 +3,25 @@ import { pokemonApiConfig } from '../config/api';
 import type {
   ItemPokemon,
   ItemType,
-  PokemonDetails,
+  PokemonDetailsType,
   PokemonApiData,
 } from '../utils/types';
 
 export const pokeApiService = {
-  getBySearchTerm: async (searchTerm: string) => {
+  getBySearchTerm: async (searchTerm: string, page: number) => {
+    const offset = (page - 1) * pokemonApiConfig.defaultLimit;
+
     if (!searchTerm) {
-      const data = await pokemonApiClient.getAllPokemons();
+      const data = await pokemonApiClient.getAllPokemons(offset);
       return data.results.map((item: ItemPokemon) => item.name);
     }
     const data = await pokemonApiClient.getPokemonByType(searchTerm);
     return data.pokemon
-      .slice(pokemonApiConfig.defaultOffset, pokemonApiConfig.defaultLimit)
+      .slice(offset, offset + pokemonApiConfig.defaultLimit)
       .map((item: ItemType) => item.pokemon.name);
   },
 
-  getPokemonDetails: async (names: string[]): Promise<PokemonDetails[]> => {
+  getPokemonDetails: async (names: string[]): Promise<PokemonDetailsType[]> => {
     const promises = names.map((pokeName) =>
       pokemonApiClient.getPokemonByName(pokeName)
     );

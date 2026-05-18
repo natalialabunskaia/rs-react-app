@@ -2,9 +2,9 @@ import axios from 'axios';
 import { pokemonApiConfig } from '../config/api';
 
 export const pokemonApiClient = {
-  getAllPokemons: async () => {
+  getAllPokemons: async (offset: number = pokemonApiConfig.defaultOffset) => {
     const res = await axios.get(
-      `${pokemonApiConfig.baseUrl}${pokemonApiConfig.endpoints.pokemon}?limit=${pokemonApiConfig.defaultLimit}&offset=${pokemonApiConfig.defaultOffset}`
+      `${pokemonApiConfig.baseUrl}${pokemonApiConfig.endpoints.pokemon}?limit=${pokemonApiConfig.defaultLimit}&offset=${offset}`
     );
     return res.data;
   },

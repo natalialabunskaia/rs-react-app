@@ -1,12 +1,14 @@
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 import type { PokemonCardProps } from '../utils/types';
 
 const PokemonCard = ({ pokemon }: PokemonCardProps) => {
   const { name, imgUrl, description } = pokemon;
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
   const handleDetailsClick = () => {
-    navigate(`${name}`);
+    const page = searchParams.get('page') || '1';
+    navigate(`details/${name}?page=${page}`);
   };
 
   return (

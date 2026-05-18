@@ -15,11 +15,11 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPage />,
     children: [
       {
-        path: '/',
+        path: '',
         element: <HomePage />,
         children: [
           {
-            path: ':id',
+            path: 'details/:id',
             element: <PokemonDetails />,
           },
         ],

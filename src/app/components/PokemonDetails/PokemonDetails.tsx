@@ -6,10 +6,10 @@ import {
 } from 'react-router';
 import './PokemonDetails.css';
 
-import type { Pokemon } from '../../utils/types';
+import type { PokemonDetailsType } from '../../utils/types';
 
 type OutletContext = {
-  pokemons: Pokemon[];
+  pokemons: PokemonDetailsType[];
 };
 
 const PokemonDetails = () => {
@@ -19,13 +19,13 @@ const PokemonDetails = () => {
   const { pokemons } = useOutletContext<OutletContext>();
 
   const pokemon = pokemons.find((item) => item.name === id);
-  const page = searchParams.get('page') ?? '1';
+  const page = searchParams.get('page');
 
   const handleClose = () => {
     navigate(`/?page=${page}`);
   };
 
-  const { name, imgUrl, description, details } = pokemon;
+  const { name, imgUrl, description, details } = pokemon as PokemonDetailsType;
 
   return (
     <aside className="pokemon-details">

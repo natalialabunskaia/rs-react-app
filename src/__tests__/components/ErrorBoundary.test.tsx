@@ -1,15 +1,11 @@
 import React from 'react';
 import { it, describe, expect, afterEach } from 'vitest';
-import {
-  render,
-  screen,
-  cleanup,
-  within
-} from '@testing-library/react';
+import { render, screen, cleanup, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ErrorBoundary } from '../../app/components/ErrorBoundary';
 import Results from '../../app/components/Results';
 import CrashButton from '../../app/components/CrashButton';
+import { MemoryRouter } from 'react-router';
 
 afterEach(() => {
   cleanup();
@@ -83,7 +79,6 @@ describe('Error handling tests', () => {
     ).toBeInTheDocument();
     expect(resetButton).toBeInTheDocument();
   });
-
 });
 
 describe('User Interaction tests', () => {
@@ -91,10 +86,12 @@ describe('User Interaction tests', () => {
 
   it('renders fallback UI after clicking CrashButton', async () => {
     render(
-      <ErrorBoundary>
-        <Results pokemons={mockPokemons} status='success' />
-        <CrashButton />
-      </ErrorBoundary>
+      <MemoryRouter>
+        <ErrorBoundary>
+          <Results pokemons={mockPokemons} status="success" />
+          <CrashButton />
+        </ErrorBoundary>
+      </MemoryRouter>
     );
 
     const crashButton = screen.getByTestId('crash-button');
@@ -106,10 +103,12 @@ describe('User Interaction tests', () => {
 
   it('restores children after clicking reset button inside fallback UI', async () => {
     render(
-      <ErrorBoundary>
-        <Results pokemons={mockPokemons} status='success' />
-        <CrashButton />
-      </ErrorBoundary>
+      <MemoryRouter>
+        <ErrorBoundary>
+          <Results pokemons={mockPokemons} status="success" />
+          <CrashButton />
+        </ErrorBoundary>
+      </MemoryRouter>
     );
     const crashButton = screen.getByTestId('crash-button');
 
