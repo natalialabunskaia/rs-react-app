@@ -2,9 +2,9 @@ import React from 'react';
 import { it, describe, expect, afterEach } from 'vitest';
 import { render, screen, cleanup, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { ErrorBoundary } from '../../app/components/ErrorBoundary';
-import Results from '../../app/components/Results';
-import CrashButton from '../../app/components/CrashButton';
+import { ErrorBoundary } from '@components/ErrorBoundary';
+import Results from '@components/Results';
+import CrashButton from '@components/CrashButton';
 import { MemoryRouter } from 'react-router';
 
 afterEach(() => {

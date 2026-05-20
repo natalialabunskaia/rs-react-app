@@ -1,6 +1,6 @@
 import { it, describe, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import PokemonCard from '../../app/components/PokemonCard';
+import PokemonCard from '@components/PokemonCard';
 import { MemoryRouter } from 'react-router';
 
 describe('PokemonCard', () => {

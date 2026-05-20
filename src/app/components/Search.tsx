@@ -1,8 +1,6 @@
-import type { SearchProps } from '../utils/types';
+import type { SearchProps } from '@utils/types';
 
-const Search = ({ searchTerm, onChange, onSubmit }: SearchProps) => {
-
-    return (
+const Search = ({ searchTerm, onChange, onSubmit }: SearchProps) => (
       <>
         <form onSubmit={onSubmit}>
           <div className="row">
@@ -39,6 +37,5 @@ const Search = ({ searchTerm, onChange, onSubmit }: SearchProps) => {
         </p>
       </>
     );
-  }
 
   export default Search;

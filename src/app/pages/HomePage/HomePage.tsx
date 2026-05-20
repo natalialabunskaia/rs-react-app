@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { usePokemonsData } from '../../hooks/usePokemonsData';
-import Search from '../../components/Search';
-import Results from '../../components/Results';
-import Spinner from '../../components/Spinner';
-import { ErrorBoundary } from '../../components/ErrorBoundary';
-import CrashButton from '../../components/CrashButton';
+import { useLocalStorage } from '@hooks/useLocalStorage';
+import { usePokemonsData } from '@hooks/usePokemonsData';
+import Search from '@components/Search';
+import Results from '@components/Results';
+import Spinner from '@components/Spinner';
+import { ErrorBoundary } from '@components/ErrorBoundary';
+import CrashButton from '@components/CrashButton';
 import { Outlet, useSearchParams } from 'react-router';
 
 export const HomePage = () => {
@@ -14,7 +14,7 @@ export const HomePage = () => {
 
   const [searchTerm, setSearchTerm] = useState(getValue() || '');
   const [errorBoundaryKey, setErrorBoundaryKey] = useState(0);
-  const [searchParams, setSearchParams ] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const resetErrorBoundary = () => {
     setErrorBoundaryKey((prevState) => prevState + 1);
@@ -36,21 +36,16 @@ export const HomePage = () => {
     setSearchTerm(trimmedValue);
     setValue(trimmedValue);
     resetErrorBoundary();
-    getPokemons(trimmedValue, Number(searchParams.get('page')));
   };
 
   useEffect(() => {
-    const page = searchParams.get('page')
-    console.log('Before: ', searchParams.get('page'))
-    if(!page) {
-      setSearchParams({page: '1'})
-      return
+    const page = searchParams.get('page');
+    if (!page) {
+      setSearchParams({ page: '1' });
+      return;
     }
-    console.log('After: ', searchParams.get('page'))
-    console.log('HomePage.useEffect: page', Number(searchParams.get('page')))
     getPokemons(searchTerm, Number(searchParams.get('page')));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
+  }, [searchParams, searchTerm, getPokemons, setSearchParams]);
 
   return (
     <main>

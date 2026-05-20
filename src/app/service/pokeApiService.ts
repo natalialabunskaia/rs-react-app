@@ -1,11 +1,10 @@
-import { pokemonApiClient } from '../api/pokemonApiClient';
-import { pokemonApiConfig } from '../config/api';
+import { pokemonApiClient } from '@api/pokemonApiClient';
+import { pokemonApiConfig } from '@config/api';
 import type {
-  ItemPokemon,
-  ItemType,
-  PokemonDetailsType,
-  PokemonApiData,
-} from '../utils/types';
+  PokemonByNameResponse,
+  PokemonItem,
+  PokemonTypeItem,
+} from '../api/pokemonApiTypes';
 
 export const pokeApiService = {
   getBySearchTerm: async (searchTerm: string, page: number) => {
@@ -13,15 +12,17 @@ export const pokeApiService = {
 
     if (!searchTerm) {
       const data = await pokemonApiClient.getAllPokemons(offset);
-      return data.results.map((item: ItemPokemon) => item.name);
+      return data.results.map((item: PokemonItem) => item.name);
     }
     const data = await pokemonApiClient.getPokemonByType(searchTerm);
     return data.pokemon
       .slice(offset, offset + pokemonApiConfig.defaultLimit)
-      .map((item: ItemType) => item.pokemon.name);
+      .map((item: PokemonTypeItem) => item.pokemon.name);
   },
 
-  getPokemonDetails: async (names: string[]): Promise<PokemonDetailsType[]> => {
+  getPokemonDetails: async (
+    names: string[]
+  ): Promise<PokemonByNameResponse[]> => {
     const promises = names.map((pokeName) =>
       pokemonApiClient.getPokemonByName(pokeName)
     );
@@ -36,11 +37,11 @@ export const pokeApiService = {
           description: 'Failed to fetch details',
         };
       }
-      const data: PokemonApiData = result.value;
+      const data: PokemonByNameResponse = result.value;
       return {
         name: data.name,
-        imgUrl: data.sprites.front_default,
-        description: `${data.types.map((slot) => slot.type.name).join(', ')}`,
+        imgUrl: data.sprites?.front_default ?? '',
+        description: data.types?.map((slot) => slot.type.name).join(', ') ?? '',
         details: `Height: ${data.height}, Weight: ${data.weight}`,
       };
     });

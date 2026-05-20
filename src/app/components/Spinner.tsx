@@ -1,4 +1,4 @@
-import type { SearchStatusProps } from '../utils/types';
+import type { SearchStatusProps } from '@utils/types';
 
 const Spinner  = ({requestStatus, error }: SearchStatusProps) => {
 

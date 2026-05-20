@@ -1,6 +1,6 @@
 import { it, describe, expect, afterEach } from 'vitest';
 import { render, screen, cleanup, within } from '@testing-library/react';
-import Results from '../../app/components/Results';
+import Results from '@components/Results';
 import { MemoryRouter } from 'react-router';
 
 afterEach(() => {

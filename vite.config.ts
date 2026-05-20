@@ -8,9 +8,11 @@ import process from 'node:process';
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  resolve: {
+    tsconfigPaths: true,
+  },
   test: {
     globals: true,
-    // environment: 'jsdom',
     environment: 'happy-dom',
     execArgv: [
       '--localstorage-file',

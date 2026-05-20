@@ -1,6 +1,6 @@
 import { it, describe, expect, afterEach, vi } from 'vitest';
-import { pokeApiService } from '../../app/service/pokeApiService';
-import { pokemonApiClient } from '../../app/api/pokemonApiClient';
+import { pokeApiService } from '@service/pokeApiService';
+import { pokemonApiClient } from '@api/pokemonApiClient';
 
 vi.mock('../../app/api/pokemonApiClient', () => ({
   pokemonApiClient: {
@@ -11,6 +11,9 @@ vi.mock('../../app/api/pokemonApiClient', () => ({
 }));
 
 const mockAllPokemonsData = {
+  count: 1118,
+  next: 'https://pokeapi.co/api/v2/pokemon?offset=20&limit=20',
+  previous: null,
   results: [
     {
       name: 'bulbasaur',
@@ -182,18 +185,24 @@ const mockBulbasaurData = {
   },
   types: [
     {
+      slot: 1,
       type: {
         name: 'grass',
+        url: 'https://pokeapi.co/api/v2/type/12/',
       },
     },
     {
+      slot: 2,
       type: {
         name: 'poison',
+        url: 'https://pokeapi.co/api/v2/type/4/',
       },
     },
   ],
   weight: 69,
   height: 7,
+  imgUrl: 'https://example.com/bulbasaur.png',
+  description: 'grass, poison',
 };
 
 const mockIvysaurData = {
@@ -203,18 +212,24 @@ const mockIvysaurData = {
   },
   types: [
     {
+      slot: 1,
       type: {
         name: 'grass',
+        url: 'https://pokeapi.co/api/v2/type/12/',
       },
     },
     {
+      slot: 2,
       type: {
         name: 'poison',
+        url: 'https://pokeapi.co/api/v2/type/4/',
       },
     },
   ],
   weight: 130,
   height: 10,
+  imgUrl: 'https://example.com/ivysaur.png',
+  description: 'grass, poison',
 };
 
 const mockNames = ['bulbasaur', 'ivysaur'];
@@ -305,7 +320,7 @@ describe('pokeApiService.getPokemonDetails', () => {
   });
 
   it('returns empty array when names array is empty', async () => {
-    vi.mocked(pokemonApiClient.getPokemonByName).mockResolvedValue([]);
+    //vi.mocked(pokemonApiClient.getPokemonByName).mockResolvedValue([]);
     const result = await pokeApiService.getPokemonDetails([]);
     expect(result).toEqual([]);
     expect(pokemonApiClient.getPokemonByName).not.toHaveBeenCalled();

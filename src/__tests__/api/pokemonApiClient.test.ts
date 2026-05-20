@@ -1,9 +1,16 @@
-import axios from 'axios';
 import { it, describe, expect, afterEach, vi } from 'vitest';
-import { pokemonApiClient } from '../../app/api/pokemonApiClient';
+import { pokemonApiClient } from '@api/pokemonApiClient';
 
-vi.mock('axios');
-const mockedAxios = vi.mocked(axios);
+const mockedAxios = vi.hoisted(()=> vi.fn());
+
+vi.mock('axios', () => ({
+  default: {
+    create: vi.fn(() => ({
+      get: mockedAxios,
+    })),
+  },
+}));
+
 
 const mockAllPokemonsData = {
   results: [
@@ -47,22 +54,22 @@ afterEach(() => {
 
 describe('pokemonApiClient.getAllPokemons', () => {
   it('calls axios.get with the pokemon list endpoint including default limit and offset', async () => {
-    mockedAxios.get.mockResolvedValue({ data: mockAllPokemonsData });
+    mockedAxios.mockResolvedValue({ data: mockAllPokemonsData });
     await pokemonApiClient.getAllPokemons();
-    expect(mockedAxios.get).toHaveBeenCalledWith(
-      'https://pokeapi.co/api/v2/pokemon?limit=20&offset=0'
+    expect(mockedAxios).toHaveBeenCalledWith(
+      'pokemon?limit=20&offset=0'
     );
   });
 
   it('returns response data when the pokemon list request is successful', async () => {
-    mockedAxios.get.mockResolvedValue({ data: mockAllPokemonsData });
+    mockedAxios.mockResolvedValue({ data: mockAllPokemonsData });
     const result = await pokemonApiClient.getAllPokemons();
     expect(result).toEqual(mockAllPokemonsData);
   });
 
   it('rejects with an error when the pokemon list request fails', async () => {
     const error = new Error('failed request');
-    mockedAxios.get.mockRejectedValue(error);
+    mockedAxios.mockRejectedValue(error);
     await expect(pokemonApiClient.getAllPokemons()).rejects.toThrow(
       'failed request'
     );
@@ -71,22 +78,22 @@ describe('pokemonApiClient.getAllPokemons', () => {
 
 describe('pokemonApiClient.getPokemonByType', () => {
   it('calls axios.get with the type endpoint and provided pokemon type', async () => {
-    mockedAxios.get.mockResolvedValue({ data: mockPokemonTypeData });
+    mockedAxios.mockResolvedValue({ data: mockPokemonTypeData });
     await pokemonApiClient.getPokemonByType('grass');
-    expect(mockedAxios.get).toHaveBeenCalledWith(
-      'https://pokeapi.co/api/v2/type/grass'
+    expect(mockedAxios).toHaveBeenCalledWith(
+      'type/grass'
     );
   });
 
   it('returns response data when the pokemon type request is successful', async () => {
-    mockedAxios.get.mockResolvedValue({ data: mockPokemonTypeData });
+    mockedAxios.mockResolvedValue({ data: mockPokemonTypeData });
     const result = await pokemonApiClient.getPokemonByType('grass');
     expect(result).toEqual(mockPokemonTypeData);
   });
 
   it('rejects with an error when the pokemon type request fails', async () => {
     const error = new Error('failed request');
-    mockedAxios.get.mockRejectedValue(error);
+    mockedAxios.mockRejectedValue(error);
     await expect(pokemonApiClient.getPokemonByType('grass')).rejects.toThrow(
       'failed request'
     );
@@ -95,14 +102,14 @@ describe('pokemonApiClient.getPokemonByType', () => {
 
 describe('pokemonApiClient.getPokemonByName', () => {
   it('calls axios.get with the pokemon endpoint and provided pokemon name', async () => {
-    mockedAxios.get.mockResolvedValue({ data: mockPokemonDetailsData });
+    mockedAxios.mockResolvedValue({ data: mockPokemonDetailsData });
     await pokemonApiClient.getPokemonByName(mockPokemonDetailsData.name);
-    expect(mockedAxios.get).toHaveBeenCalledWith(
-      'https://pokeapi.co/api/v2/pokemon/bulbasaur'
+    expect(mockedAxios).toHaveBeenCalledWith(
+      'pokemon/bulbasaur'
     );
   });
   it('returns response data when the pokemon details request is successful', async () => {
-    mockedAxios.get.mockResolvedValue({ data: mockPokemonDetailsData });
+    mockedAxios.mockResolvedValue({ data: mockPokemonDetailsData });
     const result = await pokemonApiClient.getPokemonByName(
       mockPokemonDetailsData.name
     );
@@ -110,7 +117,7 @@ describe('pokemonApiClient.getPokemonByName', () => {
   });
   it('rejects with an error when the pokemon details request fails', async () => {
     const error = new Error('failed request');
-    mockedAxios.get.mockRejectedValue(error);
+    mockedAxios.mockRejectedValue(error);
     await expect(
       pokemonApiClient.getPokemonByName('bulbasaur')
     ).rejects.toThrow('failed request');

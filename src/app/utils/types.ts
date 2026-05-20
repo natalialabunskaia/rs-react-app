@@ -1,44 +1,14 @@
-export type PokemonDetailsType = {
-  name: string;
-  imgUrl: string;
-  description: string;
-  details?: string;
-};
+import type { PokemonByNameResponse } from '../api/pokemonApiTypes';
+
 export type PokemonCardProps = {
-  pokemon: PokemonDetailsType;
-};
-
-export type PokemonTypeSlot = {
-  slot: number;
-  type: {
-    name: string;
-    url: string;
-  };
-};
-
-export type PokemonApiData = {
-  name: string;
-  weight: number;
-  height: number;
-  sprites: {
-    front_default: string;
-  };
-  types: PokemonTypeSlot[];
-};
-
-export type ItemPokemon = {
-  url: string;
-  name: string;
-};
-
-export type ItemType = {
-  pokemon: ItemPokemon;
+  pokemon: PokemonByNameResponse;
 };
 
 export type ResultProps = {
-  pokemons: PokemonDetailsType[];
+  pokemons: PokemonByNameResponse[];
   status: RequestStatus;
 };
+
 export type RequestStatus = 'idle' | 'loading' | 'success' | 'error';
 
 export type RequestStatusProps = {

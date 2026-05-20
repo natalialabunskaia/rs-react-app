@@ -2,11 +2,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router';
-import Root from './routes/root';
-import { HomePage } from './app/pages/HomePage/HomePage';
-import NotFoundPage from './app/pages/NotFoundPage/NotFoundPage';
-import AboutPage from './app/pages/AboutPage/AboutPage';
-import PokemonDetails from './app/components/PokemonDetails/PokemonDetails';
+import Root from '@routes/root';
+import { HomePage } from '@pages/HomePage/HomePage';
+import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
+import AboutPage from '@pages/AboutPage/AboutPage';
+import PokemonDetails from '@components/PokemonDetails/PokemonDetails';
 
 const router = createBrowserRouter([
   {

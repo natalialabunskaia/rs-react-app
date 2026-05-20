@@ -1,6 +1,6 @@
-import PokemonList from './PokemonList';
-import type { ResultProps } from '../utils/types';
-import { Pagination } from './Pagination';
+import PokemonList from '@components/PokemonList';
+import type { ResultProps } from '@utils/types';
+import { Pagination } from '@components/Pagination';
 
 const Results = ({ pokemons, status }: ResultProps) => {
   return (

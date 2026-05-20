@@ -6,10 +6,10 @@ import {
 } from 'react-router';
 import './PokemonDetails.css';
 
-import type { PokemonDetailsType } from '../../utils/types';
+import type { PokemonByNameResponse } from '@/app/api/pokemonApiTypes';
 
 type OutletContext = {
-  pokemons: PokemonDetailsType[];
+  pokemons: PokemonByNameResponse[];
 };
 
 const PokemonDetails = () => {
@@ -20,12 +20,11 @@ const PokemonDetails = () => {
 
   const pokemon = pokemons.find((item) => item.name === id);
   const page = searchParams.get('page');
+  const { name, imgUrl, description, details } = pokemon as PokemonByNameResponse;
 
   const handleClose = () => {
     navigate(`/?page=${page}`);
   };
-
-  const { name, imgUrl, description, details } = pokemon as PokemonDetailsType;
 
   return (
     <aside className="pokemon-details">

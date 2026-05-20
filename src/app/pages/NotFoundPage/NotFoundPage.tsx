@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 import './NotFoundPage.css';
+import NotFoundIcon from '@asserts/404.png';
 
 const NotFoundPage = () => {
   return (
@@ -7,7 +8,7 @@ const NotFoundPage = () => {
       <section className="not-found-card">
         <div className="not-found-content">
           <div className="not-found-avatar">
-            <img src="/404.png" alt="Lost Pokémon" />
+            <img src={NotFoundIcon} alt="Lost Pokémon" />
           </div>
 
           <div>
