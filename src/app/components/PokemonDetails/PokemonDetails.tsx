@@ -20,10 +20,11 @@ const PokemonDetails = () => {
 
   const pokemon = pokemons.find((item) => item.name === id);
   const page = searchParams.get('page');
+  const search = searchParams.get('search');
   const { name, imgUrl, description, details } = pokemon as PokemonByNameResponse;
 
   const handleClose = () => {
-    navigate(`/?page=${page}`);
+    navigate(`/?search=${search}&page=${page}`);
   };
 
   return (

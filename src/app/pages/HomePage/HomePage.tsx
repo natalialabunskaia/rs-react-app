@@ -6,7 +6,7 @@ import Results from '@components/Results';
 import Spinner from '@components/Spinner';
 import { ErrorBoundary } from '@components/ErrorBoundary';
 import CrashButton from '@components/CrashButton';
-import { Outlet, useSearchParams } from 'react-router';
+import { Outlet, useSearchParams, useNavigate } from 'react-router';
 
 export const HomePage = () => {
   const { getValue, setValue } = useLocalStorage('searchTerm');
@@ -15,6 +15,10 @@ export const HomePage = () => {
   const [searchTerm, setSearchTerm] = useState(getValue() || '');
   const [errorBoundaryKey, setErrorBoundaryKey] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  const searchValue = searchParams.get('search') || '';
+  const page = searchParams.get('page') || '1';
 
   const resetErrorBoundary = () => {
     setErrorBoundaryKey((prevState) => prevState + 1);
@@ -27,25 +31,19 @@ export const HomePage = () => {
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     const trimmedValue = searchTerm.trim().toLowerCase();
-    const localStorageValue = getValue();
-
-    if (trimmedValue === localStorageValue) {
-      return;
-    }
-
-    setSearchTerm(trimmedValue);
     setValue(trimmedValue);
+    setSearchTerm(trimmedValue);
+    navigate(`/?search=${trimmedValue}&page=1`);
     resetErrorBoundary();
   };
 
   useEffect(() => {
-    const page = searchParams.get('page');
     if (!page) {
-      setSearchParams({ page: '1' });
+      setSearchParams({ search: searchValue, page: '1' });
       return;
     }
-    getPokemons(searchTerm, Number(searchParams.get('page')));
-  }, [searchParams, searchTerm, getPokemons, setSearchParams]);
+    getPokemons(searchValue, Number(searchParams.get('page') || '1'));
+  }, [searchValue, page, searchParams, getPokemons, setSearchParams]);
 
   return (
     <main>

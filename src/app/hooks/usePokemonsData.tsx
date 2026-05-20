@@ -2,7 +2,7 @@
  import { pokeApiService } from '@service/pokeApiService';
  import getErrorMessage from '@utils/getErrorMessage';
  import type { RequestStatus } from '@utils/types';
-import type { PokemonByNameResponse } from '../api/pokemonApiTypes';
+import type { PokemonByNameResponse } from '@api/pokemonApiTypes';
 
  export const usePokemonsData = () => {
  const [results, setResults] = useState<PokemonByNameResponse[]>([]);

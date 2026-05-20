@@ -1,19 +1,27 @@
-import { NavLink, useSearchParams } from 'react-router';
+import { NavLink, useSearchParams, useMatch } from 'react-router';
 import type { RequestStatusProps } from '@utils/types';
 
 export const Pagination = ({ status }: RequestStatusProps) => {
   const [searchParams] = useSearchParams();
 
   const page = Number(searchParams.get('page'));
+  const search = searchParams.get('search');
+  const isDetailsOpen = useMatch('/details/:id');
 
   const nextPage = (page: number): string => {
-    const next = page + 1;
-    return `?page=${String(next)}`;
+   const next = page + 1;
+    if (!isDetailsOpen) {
+      return `?search=${search}&page=${String(next)}`;
+    }
+    return `/?search=${search}&page=${String(next)}`;
   };
 
   const prevPage = (page: number): string => {
     const prev = page > 1 ? page - 1 : 1;
-    return `?page=${String(prev)}`;
+    if (!isDetailsOpen) {
+      return `?search=${search}&page=${String(prev)}`;
+    }
+    return `/?search=${search}&page=${String(prev)}`;
   };
 
   if (status !== 'success') {
@@ -38,7 +46,6 @@ export const Pagination = ({ status }: RequestStatusProps) => {
             className="page-link"
             aria-label="Next"
           >
-            <li className="page-item"></li>
             <span aria-hidden="true">&raquo;</span>
           </NavLink>
         </li>
