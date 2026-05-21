@@ -32,6 +32,9 @@ export const HomePage = () => {
 
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (input.trim() === '') {
+      return 
+    }
     const trimmedInput = input.trim().toLowerCase();
     setLocalStorageValue(trimmedInput);
     setInput(trimmedInput);
@@ -48,22 +51,9 @@ export const HomePage = () => {
   };
 
   useEffect(() => {
-    if (!searchParams.get('page')) {
-      const params = new URLSearchParams();
-
-      params.set('page', '1');
-
-      if (search) {
-        params.set('search', search);
-      } else if (storedSearch) {
-        params.set('search', storedSearch);
-      }
-
-      setSearchParams(params, { replace: true });
-      return;
-    }
 
     if (!search && storedSearch) {
+
       const params = new URLSearchParams();
 
       params.set('page', '1');
