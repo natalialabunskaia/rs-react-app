@@ -9,15 +9,17 @@ import CrashButton from '@components/CrashButton';
 import { Outlet, useSearchParams, useNavigate } from 'react-router';
 
 export const HomePage = () => {
-  const { getValue, setValue } = useLocalStorage('searchTerm');
+  const { getLocalStorageValue, setLocalStorageValue } =
+    useLocalStorage('input');
   const { getPokemons, results, requestStatus, error } = usePokemonsData();
 
-  const [searchTerm, setSearchTerm] = useState(getValue() || '');
+  const storedSearch = getLocalStorageValue() || '';
+  const [input, setInput] = useState(storedSearch);
   const [errorBoundaryKey, setErrorBoundaryKey] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const searchValue = searchParams.get('search') || '';
+  const search = searchParams.get('search') || '';
   const page = searchParams.get('page') || '1';
 
   const resetErrorBoundary = () => {
@@ -25,31 +27,59 @@ export const HomePage = () => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
+    setInput(e.target.value);
   };
 
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const trimmedValue = searchTerm.trim().toLowerCase();
-    setValue(trimmedValue);
-    setSearchTerm(trimmedValue);
-    navigate(`/?search=${trimmedValue}&page=1`);
+    const trimmedInput = input.trim().toLowerCase();
+    setLocalStorageValue(trimmedInput);
+    setInput(trimmedInput);
+    const params = new URLSearchParams();
+
+    params.set('page', '1');
+
+    if (trimmedInput) {
+      params.set('search', trimmedInput);
+    }
+
+    navigate(`/?${params.toString()}`);
     resetErrorBoundary();
   };
 
   useEffect(() => {
-    if (!page) {
-      setSearchParams({ search: searchValue, page: '1' });
+    if (!searchParams.get('page')) {
+      const params = new URLSearchParams();
+
+      params.set('page', '1');
+
+      if (search) {
+        params.set('search', search);
+      } else if (storedSearch) {
+        params.set('search', storedSearch);
+      }
+
+      setSearchParams(params, { replace: true });
       return;
     }
-    getPokemons(searchValue, Number(searchParams.get('page') || '1'));
-  }, [searchValue, page, searchParams, getPokemons, setSearchParams]);
 
+    if (!search && storedSearch) {
+      const params = new URLSearchParams();
+
+      params.set('page', '1');
+      params.set('search', storedSearch);
+
+      setSearchParams(params, { replace: true });
+      return;
+    }
+
+    getPokemons(search, Number(page));
+  }, [search, page, searchParams, storedSearch, getPokemons, setSearchParams]);
   return (
     <main>
       <section className="container-fluid bg-dark text-white px-5 pt-3 pb-5">
         <Search
-          searchTerm={searchTerm}
+          searchTerm={input}
           onChange={handleChange}
           onSubmit={handleSubmit}
         />
