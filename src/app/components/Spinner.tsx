@@ -1,9 +1,6 @@
-import React from 'react';
-import type { SearchStatusProps } from '../utils/types';
+import type { SearchStatusProps } from '@utils/types';
 
-export default class SearchStatus extends React.Component<SearchStatusProps>{
-  render() {
-    const { requestStatus, error } = this.props;
+const Spinner  = ({requestStatus, error }: SearchStatusProps) => {
 
     if (requestStatus === 'loading') {
       return (
@@ -18,4 +15,5 @@ export default class SearchStatus extends React.Component<SearchStatusProps>{
     
     return null;
   }
-}
+
+export default Spinner;

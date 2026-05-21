@@ -1,25 +1,39 @@
 import axios from 'axios';
-import { pokemonApiConfig } from '../config/api';
+import queryString from 'query-string';
+import { pokemonApiConfig } from '@config/api';
+import type { AllPokemonRespoonse, PokemonByNameResponse, PokemonTypeResponse } from './pokemonApiTypes';
+
+const instance = axios.create({
+  baseURL: pokemonApiConfig.baseUrl,
+});
 
 export const pokemonApiClient = {
-  getAllPokemons: async () => {
-    const res = await axios.get(
-      `${pokemonApiConfig.baseUrl}${pokemonApiConfig.endpoints.pokemon}?limit=${pokemonApiConfig.defaultLimit}&offset=${pokemonApiConfig.defaultOffset}`
+  getAllPokemons: async (
+    offset: number = pokemonApiConfig.defaultOffset
+  ): Promise<AllPokemonRespoonse> => {
+    const query = queryString.stringify({
+      limit: pokemonApiConfig.defaultLimit,
+      offset,
+    });
+
+    const res = await instance.get(
+      `${pokemonApiConfig.endpoints.pokemon}?${query}`
     );
-    console.log('all res', res)
     return res.data;
   },
 
-  getPokemonByType: async (type: string) => {
-    const res = await axios.get(
-      `${pokemonApiConfig.baseUrl}${pokemonApiConfig.endpoints.type}/${type}`
+  getPokemonByType: async (type: string): Promise<PokemonTypeResponse> => {
+    const res = await instance.get(
+      `${pokemonApiConfig.endpoints.type}/${type}`
     );
     return res.data;
   },
 
-  getPokemonByName: async (pokemonName: string) => {
-    const res = await axios.get(
-      `${pokemonApiConfig.baseUrl}${pokemonApiConfig.endpoints.pokemon}/${pokemonName}`
+  getPokemonByName: async (
+    pokemonName: string
+  ): Promise<PokemonByNameResponse> => {
+    const res = await instance.get(
+      `${pokemonApiConfig.endpoints.pokemon}/${pokemonName}`
     );
     return res.data;
   },

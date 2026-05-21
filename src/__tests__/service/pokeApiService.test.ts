@@ -1,6 +1,6 @@
 import { it, describe, expect, afterEach, vi } from 'vitest';
-import { pokeApiService } from '../../app/service/pokeApiService';
-import { pokemonApiClient } from '../../app/api/pokemonApiClient';
+import { pokeApiService } from '@service/pokeApiService';
+import { pokemonApiClient } from '@api/pokemonApiClient';
 
 vi.mock('../../app/api/pokemonApiClient', () => ({
   pokemonApiClient: {
@@ -11,6 +11,9 @@ vi.mock('../../app/api/pokemonApiClient', () => ({
 }));
 
 const mockAllPokemonsData = {
+  count: 1118,
+  next: 'https://pokeapi.co/api/v2/pokemon?offset=20&limit=20',
+  previous: null,
   results: [
     {
       name: 'bulbasaur',
@@ -182,18 +185,24 @@ const mockBulbasaurData = {
   },
   types: [
     {
+      slot: 1,
       type: {
         name: 'grass',
+        url: 'https://pokeapi.co/api/v2/type/12/',
       },
     },
     {
+      slot: 2,
       type: {
         name: 'poison',
+        url: 'https://pokeapi.co/api/v2/type/4/',
       },
     },
   ],
   weight: 69,
   height: 7,
+  imgUrl: 'https://example.com/bulbasaur.png',
+  description: 'grass, poison',
 };
 
 const mockIvysaurData = {
@@ -203,18 +212,24 @@ const mockIvysaurData = {
   },
   types: [
     {
+      slot: 1,
       type: {
         name: 'grass',
+        url: 'https://pokeapi.co/api/v2/type/12/',
       },
     },
     {
+      slot: 2,
       type: {
         name: 'poison',
+        url: 'https://pokeapi.co/api/v2/type/4/',
       },
     },
   ],
   weight: 130,
   height: 10,
+  imgUrl: 'https://example.com/ivysaur.png',
+  description: 'grass, poison',
 };
 
 const mockNames = ['bulbasaur', 'ivysaur'];
@@ -223,14 +238,30 @@ const mockPokemonDescription = [
   {
     name: 'bulbasaur',
     imgUrl: 'https://example.com/bulbasaur.png',
-    description: 'type - grass, poison; weight - 69; height - 7',
+    description: 'grass, poison',
+    details: "Height: 7, Weight: 69",
   },
   {
     name: 'ivysaur',
     imgUrl: 'https://example.com/ivysaur.png',
-    description: 'type - grass, poison; weight - 130; height - 10',
+    description: 'grass, poison',
+    details: 'Height: 10, Weight: 130',
   },
 ];
+
+const mockPokemonDescriptionWithErrorInCard = [
+  {
+    name: 'bulbasaur',
+    imgUrl: '',
+    description: 'Failed to fetch details',
+  },
+  {
+    name: 'ivysaur',
+    imgUrl: '',
+    description: 'Failed to fetch details',
+  },
+];
+
 afterEach(() => {
   vi.clearAllMocks();
 });
@@ -240,7 +271,7 @@ describe('pokeApiService.getBySearchTerm', () => {
     vi.mocked(pokemonApiClient.getAllPokemons).mockResolvedValue(
       mockAllPokemonsData
     );
-    const result = await pokeApiService.getBySearchTerm('');
+    const result = await pokeApiService.getBySearchTerm('', 1);
     expect(pokemonApiClient.getAllPokemons).toHaveBeenCalled();
     expect(pokemonApiClient.getPokemonByType).not.toHaveBeenCalled();
     expect(result).toEqual(
@@ -252,7 +283,7 @@ describe('pokeApiService.getBySearchTerm', () => {
     vi.mocked(pokemonApiClient.getPokemonByType).mockResolvedValue(
       mockPokemonByTypeData
     );
-    const result = await pokeApiService.getBySearchTerm('normal');
+    const result = await pokeApiService.getBySearchTerm('normal', 1);
     expect(pokemonApiClient.getPokemonByType).toHaveBeenCalled();
     expect(pokemonApiClient.getAllPokemons).not.toHaveBeenCalled();
     expect(result).toHaveLength(20);
@@ -261,18 +292,18 @@ describe('pokeApiService.getBySearchTerm', () => {
   it('rejects when api client fails', async () => {
     const error = new Error('failed request');
     vi.mocked(pokemonApiClient.getPokemonByType).mockRejectedValue(error);
-    await expect(pokeApiService.getBySearchTerm('fire')).rejects.toThrow(
+    await expect(pokeApiService.getBySearchTerm('fire', 1)).rejects.toThrow(
       'failed request'
     );
   });
 });
 
-describe('pokeApiService.getPokemonDescription', () => {
+describe('pokeApiService.getPokemonDetails', () => {
   it('calls getPokemonByName for each pokemon name', async () => {
     vi.mocked(pokemonApiClient.getPokemonByName)
       .mockResolvedValueOnce(mockBulbasaurData)
       .mockResolvedValueOnce(mockIvysaurData);
-    await pokeApiService.getPokemonDescription(mockNames);
+    await pokeApiService.getPokemonDetails(mockNames);
     expect(pokemonApiClient.getPokemonByName).toHaveBeenCalledTimes(
       mockNames.length
     );
@@ -284,21 +315,22 @@ describe('pokeApiService.getPokemonDescription', () => {
     vi.mocked(pokemonApiClient.getPokemonByName)
       .mockResolvedValueOnce(mockBulbasaurData)
       .mockResolvedValueOnce(mockIvysaurData);
-    const result = await pokeApiService.getPokemonDescription(mockNames);
+    const result = await pokeApiService.getPokemonDetails(mockNames);
     expect(result).toEqual(mockPokemonDescription);
   });
 
   it('returns empty array when names array is empty', async () => {
-    vi.mocked(pokemonApiClient.getPokemonByName).mockResolvedValue([]);
-    const result = await pokeApiService.getPokemonDescription([]);
+    //vi.mocked(pokemonApiClient.getPokemonByName).mockResolvedValue([]);
+    const result = await pokeApiService.getPokemonDetails([]);
     expect(result).toEqual([]);
     expect(pokemonApiClient.getPokemonByName).not.toHaveBeenCalled();
   });
-  it('rejects when getPokemonByName fails', async () => {
+
+  it('shows error message in description when getPokemonByName fails', async () => {
     const error = new Error('failed request');
     vi.mocked(pokemonApiClient.getPokemonByName).mockRejectedValue(error);
     await expect(
-      pokeApiService.getPokemonDescription(mockNames)
-    ).rejects.toThrow('failed request');
+      pokeApiService.getPokemonDetails(mockNames)
+    ).resolves.toEqual(mockPokemonDescriptionWithErrorInCard);
   });
 });

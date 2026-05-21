@@ -1,6 +1,6 @@
 import { it, describe, expect, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
-import SearchStatus from '../../app/components/SearchStatus';
+import SearchStatus from '@components/Spinner';
 
 afterEach(() => {
   cleanup();

@@ -1,5 +1,5 @@
 import { it, describe, expect } from 'vitest';
-import getErrorMessage from '../../app/utils/getErrorMessage';
+import getErrorMessage from '@utils/getErrorMessage';
 
 
 describe('getErrorMessage', () => {

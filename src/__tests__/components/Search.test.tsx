@@ -1,7 +1,7 @@
 import { it, describe, expect, vi, afterEach } from 'vitest';
 import { render, screen, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Search from '../../app/components/Search';
+import Search from '@components/Search';
 
 afterEach(() => {
   cleanup();
