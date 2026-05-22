@@ -1,5 +1,5 @@
-import './AboutPage.css';
-import AboutPageIcon from '@asserts/nintendo.png';
+import aboutPageIcon from '@assets/nintendo.png';
+import style from '@pages/aboutPage/AboutPage.module.css';
 
 const pokeApiLink = 'https://pokeapi.co/';
 const gitHubAuthorLink = 'https://github.com/natalialabunskaia';
@@ -7,11 +7,11 @@ const rsSchoolLink = 'https://rs.school/courses/reactjs';
 
 const AboutPage = () => {
   return (
-    <main className="about-page">
-      <section className="about-card">
-        <div className="about-content">
-          <div className="pokemon-avatar">
-            <img src={AboutPageIcon} alt="Pokemon" />
+    <main className={style.aboutPage}>
+      <section className={style.aboutCard}>
+        <div className={style.aboutContent}>
+          <div className={style.pokemonAvatar}>
+            <img src={aboutPageIcon} alt="Pokemon" />
           </div>
 
           <div>
@@ -38,7 +38,7 @@ const AboutPage = () => {
               href={rsSchoolLink}
               target="_blank"
               rel="noreferrer"
-              className="rs-link"
+              className={style.rsLink}
             >
               Visit RS School React Course →
             </a>

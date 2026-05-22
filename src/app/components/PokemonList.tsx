@@ -1,5 +1,5 @@
 import PokemonCard from '@components/PokemonCard';
-import type { PokemonByNameResponse } from '../api/pokemonApiTypes';
+import type { PokemonByNameResponse } from '@api/pokemonApiTypes';
 
 const PokemonList = ({ pokemons }: { pokemons: PokemonByNameResponse[] }) => {
   return (

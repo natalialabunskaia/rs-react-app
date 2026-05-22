@@ -5,6 +5,6 @@ export const useLocalStorage = (key: string) => {
   const getLocalStorageValue = () => {
     return localStorage.getItem(key || '');
   };
+
   return { setLocalStorageValue, getLocalStorageValue };
 };
-

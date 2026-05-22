@@ -7,9 +7,8 @@ import Spinner from '@components/Spinner';
 import { ErrorBoundary } from '@components/ErrorBoundary';
 import CrashButton from '@components/CrashButton';
 import { Outlet, useSearchParams, useNavigate } from 'react-router';
-import { useCounterStore } from '@store/store';
-import Counter from '@/app/components/Counter';
-import '@app/pages/HomePage/HomePage.css';
+import Counter from '@/app/components/counter/Counter';
+import styles from '@pages/homePage/HomePage.module.css';
 
 export const HomePage = () => {
   const { getLocalStorageValue, setLocalStorageValue } =
@@ -21,8 +20,6 @@ export const HomePage = () => {
   const [errorBoundaryKey, setErrorBoundaryKey] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
-
-  const count = useCounterStore((state) => state.count);
 
   const search = searchParams.get('search') || '';
   const page = searchParams.get('page') || '1';
@@ -63,11 +60,13 @@ export const HomePage = () => {
       params.set('search', storedSearch);
 
       setSearchParams(params, { replace: true });
+
       return;
     }
 
     getPokemons(search, Number(page));
   }, [search, page, searchParams, storedSearch, getPokemons, setSearchParams]);
+
   return (
     <main>
       <section className="container-fluid bg-dark text-white px-5 pt-3 pb-5">
@@ -86,9 +85,9 @@ export const HomePage = () => {
               <CrashButton />
             </ErrorBoundary>
           </section>
-          <aside className="col-4 pokemon-sidebar">
+          <aside className={`col-4 ${styles.pokemonSidebar}`}>
             <Outlet context={{ pokemons: results }} />
-            <Counter count={count} />
+            <Counter />
           </aside>
         </div>
       </div>

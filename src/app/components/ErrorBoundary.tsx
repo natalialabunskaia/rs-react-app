@@ -1,7 +1,6 @@
 import React from 'react';
 import type { ErrorBoundaryProps, ErrorBoundaryState } from '@utils/types';
 
-
 export class ErrorBoundary extends React.Component<
   ErrorBoundaryProps,
   ErrorBoundaryState
@@ -29,13 +28,19 @@ export class ErrorBoundary extends React.Component<
           <div className="alert alert-danger text-center" role="alert">
             <h2>Something went wrong</h2>
             <p>Please reload the page or try again later.</p>
-            <button onClick={this.handleClick} type="button" className="btn btn-primary" role='button'>
+            <button
+              onClick={this.handleClick}
+              type="button"
+              className="btn btn-primary"
+              role="button"
+            >
               Try again
             </button>
           </div>
         </section>
       );
     }
+
     return this.props.children;
   }
 }

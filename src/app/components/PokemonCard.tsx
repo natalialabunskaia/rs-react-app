@@ -9,7 +9,8 @@ const PokemonCard = ({ pokemon }: PokemonCardProps) => {
   const page = searchParams.get('page') || '1';
   const search = searchParams.get('search') || '';
 
-  const button = (page: string): string => `details/${name}?search=${search}&page=${page}`;
+  const button = (page: string): string =>
+    `details/${name}?search=${search}&page=${page}`;
 
   return (
     <div className="col" data-testid="pokemon-card">

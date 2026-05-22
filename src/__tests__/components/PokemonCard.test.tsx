@@ -28,9 +28,7 @@ describe('PokemonCard', () => {
       </MemoryRouter>
     );
 
-    const descriptionElement = screen.getByText(
-      /type: electric/i
-    );
+    const descriptionElement = screen.getByText(/type: electric/i);
     expect(descriptionElement).toBeInTheDocument();
   });
 });

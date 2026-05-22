@@ -38,6 +38,7 @@ class ErrorBoundaryChildWithError extends React.Component {
     if (shouldBeTrue) {
       throw new Error('test error from error boundary child component');
     }
+
     return null;
   }
 }

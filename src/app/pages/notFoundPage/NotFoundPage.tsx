@@ -1,13 +1,13 @@
 import { Link } from 'react-router';
-import './NotFoundPage.css';
-import NotFoundIcon from '@asserts/404.png';
+import NotFoundIcon from '@assets/404.png';
+import style from '@pages/notFoundPage/NotFoundPage.module.css';
 
 const NotFoundPage = () => {
   return (
-    <main className="not-found-page">
-      <section className="not-found-card">
-        <div className="not-found-content">
-          <div className="not-found-avatar">
+    <main className={style.notFoundPage}>
+      <section className={style.notFoundCard}>
+        <div className={style.notFoundContent}>
+          <div className={style.notFoundAvatar}>
             <img src={NotFoundIcon} alt="Lost Pokémon" />
           </div>
 
@@ -18,7 +18,7 @@ const NotFoundPage = () => {
               looking for does not exist.
             </p>
 
-            <Link to="/" className="home-link">
+            <Link to="/" className={style.homeLink}>
               Back to App
             </Link>
           </div>
