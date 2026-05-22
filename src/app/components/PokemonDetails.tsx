@@ -5,7 +5,6 @@ import {
   useSearchParams,
 } from 'react-router';
 import type { PokemonByNameResponse } from '@/app/api/pokemonApiTypes';
-import style from '@components/pokemonDetails/PokemonDetails.module.css';
 
 type OutletContext = {
   pokemons: PokemonByNameResponse[];
@@ -28,8 +27,8 @@ const PokemonDetails = () => {
   };
 
   return (
-    <aside className={style.pokemonDetails}>
-      <section className={style.aboutPokemon}>
+    <aside className="p-4 position-sticky top-0 z-2">
+      <section className="bg-white rounded-4 p-3 border text-center w-100 mx-auto">
         <div className="pokemon-avatar">
           <img src={imgUrl} alt={name} />
         </div>

@@ -1,5 +1,5 @@
 import aboutPageIcon from '@assets/nintendo.png';
-import style from '@pages/aboutPage/AboutPage.module.css';
+import style from './AboutPage.module.css';
 
 const pokeApiLink = 'https://pokeapi.co/';
 const gitHubAuthorLink = 'https://github.com/natalialabunskaia';

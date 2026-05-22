@@ -7,8 +7,8 @@ import Spinner from '@components/Spinner';
 import { ErrorBoundary } from '@components/ErrorBoundary';
 import CrashButton from '@components/CrashButton';
 import { Outlet, useSearchParams, useNavigate } from 'react-router';
-import Counter from '@/app/components/counter/Counter';
-import styles from '@pages/homePage/HomePage.module.css';
+import Counter from '@/app/components/Counter';
+import styles from './HomePage.module.css';
 
 export const HomePage = () => {
   const { getLocalStorageValue, setLocalStorageValue } =

@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import NotFoundIcon from '@assets/404.png';
-import style from '@pages/notFoundPage/NotFoundPage.module.css';
+import style from './NotFoundPage.module.css';
 
 const NotFoundPage = () => {
   return (
