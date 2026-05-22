@@ -4,8 +4,6 @@ import {
   useParams,
   useSearchParams,
 } from 'react-router';
-import './PokemonDetails.css';
-
 import type { PokemonByNameResponse } from '@/app/api/pokemonApiTypes';
 
 type OutletContext = {
@@ -21,15 +19,16 @@ const PokemonDetails = () => {
   const pokemon = pokemons.find((item) => item.name === id);
   const page = searchParams.get('page');
   const search = searchParams.get('search');
-  const { name, imgUrl, description, details } = pokemon as PokemonByNameResponse;
+  const { name, imgUrl, description, details } =
+    pokemon as PokemonByNameResponse;
 
   const handleClose = () => {
     navigate(`/?search=${search}&page=${page}`);
   };
 
   return (
-    <aside className="pokemon-details">
-      <section className="about-pokemon">
+    <aside className="p-4 position-sticky top-0 z-2">
+      <section className="bg-white rounded-4 p-3 border text-center w-100 mx-auto">
         <div className="pokemon-avatar">
           <img src={imgUrl} alt={name} />
         </div>

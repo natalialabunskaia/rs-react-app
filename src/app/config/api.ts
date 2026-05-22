@@ -1,9 +1,9 @@
 export const pokemonApiConfig = {
-    baseUrl: 'https://pokeapi.co/api/v2/',
-    endpoints: {
-        pokemon: 'pokemon',
-        type: 'type'
-    },
-    defaultLimit: 20,
-    defaultOffset: 0
-}
+  baseUrl: import.meta.env.VITE_POKEMON_API_BASE_URL,
+  endpoints: {
+    pokemon: 'pokemon',
+    type: 'type',
+  },
+  defaultLimit: 20,
+  defaultOffset: 0,
+};

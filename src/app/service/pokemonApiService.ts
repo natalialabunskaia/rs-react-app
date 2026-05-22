@@ -12,9 +12,11 @@ export const pokeApiService = {
 
     if (!searchTerm) {
       const data = await pokemonApiClient.getAllPokemons(offset);
+
       return data.results.map((item: PokemonItem) => item.name);
     }
     const data = await pokemonApiClient.getPokemonByType(searchTerm);
+
     return data.pokemon
       .slice(offset, offset + pokemonApiConfig.defaultLimit)
       .map((item: PokemonTypeItem) => item.pokemon.name);
@@ -38,6 +40,7 @@ export const pokeApiService = {
         };
       }
       const data: PokemonByNameResponse = result.value;
+
       return {
         name: data.name,
         imgUrl: data.sprites?.front_default ?? '',

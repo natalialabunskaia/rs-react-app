@@ -7,6 +7,8 @@ import Spinner from '@components/Spinner';
 import { ErrorBoundary } from '@components/ErrorBoundary';
 import CrashButton from '@components/CrashButton';
 import { Outlet, useSearchParams, useNavigate } from 'react-router';
+import Counter from '@/app/components/Counter';
+import styles from './HomePage.module.css';
 
 export const HomePage = () => {
   const { getLocalStorageValue, setLocalStorageValue } =
@@ -33,7 +35,7 @@ export const HomePage = () => {
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (input.trim() === '') {
-      return 
+      return;
     }
     const trimmedInput = input.trim().toLowerCase();
     setLocalStorageValue(trimmedInput);
@@ -51,20 +53,20 @@ export const HomePage = () => {
   };
 
   useEffect(() => {
-
     if (!search && storedSearch) {
-
       const params = new URLSearchParams();
 
       params.set('page', '1');
       params.set('search', storedSearch);
 
       setSearchParams(params, { replace: true });
+
       return;
     }
 
     getPokemons(search, Number(page));
   }, [search, page, searchParams, storedSearch, getPokemons, setSearchParams]);
+
   return (
     <main>
       <section className="container-fluid bg-dark text-white px-5 pt-3 pb-5">
@@ -83,8 +85,9 @@ export const HomePage = () => {
               <CrashButton />
             </ErrorBoundary>
           </section>
-          <aside className="col-4 py-5">
+          <aside className={`col-4 ${styles.pokemonSidebar}`}>
             <Outlet context={{ pokemons: results }} />
+            <Counter />
           </aside>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { it, describe, expect, afterEach, vi } from 'vitest';
 import { pokemonApiClient } from '@api/pokemonApiClient';
 
-const mockedAxios = vi.hoisted(()=> vi.fn());
+const mockedAxios = vi.hoisted(() => vi.fn());
 
 vi.mock('axios', () => ({
   default: {
@@ -10,7 +10,6 @@ vi.mock('axios', () => ({
     })),
   },
 }));
-
 
 const mockAllPokemonsData = {
   results: [
@@ -56,9 +55,7 @@ describe('pokemonApiClient.getAllPokemons', () => {
   it('calls axios.get with the pokemon list endpoint including default limit and offset', async () => {
     mockedAxios.mockResolvedValue({ data: mockAllPokemonsData });
     await pokemonApiClient.getAllPokemons();
-    expect(mockedAxios).toHaveBeenCalledWith(
-      'pokemon?limit=20&offset=0'
-    );
+    expect(mockedAxios).toHaveBeenCalledWith('pokemon?limit=20&offset=0');
   });
 
   it('returns response data when the pokemon list request is successful', async () => {
@@ -80,9 +77,7 @@ describe('pokemonApiClient.getPokemonByType', () => {
   it('calls axios.get with the type endpoint and provided pokemon type', async () => {
     mockedAxios.mockResolvedValue({ data: mockPokemonTypeData });
     await pokemonApiClient.getPokemonByType('grass');
-    expect(mockedAxios).toHaveBeenCalledWith(
-      'type/grass'
-    );
+    expect(mockedAxios).toHaveBeenCalledWith('type/grass');
   });
 
   it('returns response data when the pokemon type request is successful', async () => {
@@ -104,9 +99,7 @@ describe('pokemonApiClient.getPokemonByName', () => {
   it('calls axios.get with the pokemon endpoint and provided pokemon name', async () => {
     mockedAxios.mockResolvedValue({ data: mockPokemonDetailsData });
     await pokemonApiClient.getPokemonByName(mockPokemonDetailsData.name);
-    expect(mockedAxios).toHaveBeenCalledWith(
-      'pokemon/bulbasaur'
-    );
+    expect(mockedAxios).toHaveBeenCalledWith('pokemon/bulbasaur');
   });
   it('returns response data when the pokemon details request is successful', async () => {
     mockedAxios.mockResolvedValue({ data: mockPokemonDetailsData });

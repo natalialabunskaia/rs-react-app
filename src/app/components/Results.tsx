@@ -9,7 +9,7 @@ const Results = ({ pokemons, status }: ResultProps) => {
       data-testid="results-container"
     >
       <Pagination status={status} />
-       <PokemonList pokemons={pokemons} />
+      <PokemonList pokemons={pokemons} />
       <Pagination status={status} />
     </section>
   );

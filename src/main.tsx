@@ -3,10 +3,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import Root from '@routes/root';
-import { HomePage } from '@pages/HomePage/HomePage';
-import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
-import AboutPage from '@pages/AboutPage/AboutPage';
-import PokemonDetails from '@components/PokemonDetails/PokemonDetails';
+import { HomePage } from '@/app/pages/homePage/HomePage';
+import NotFoundPage from '@/app/pages/notFoundPage/NotFoundPage';
+import AboutPage from '@/app/pages/aboutPage/AboutPage';
+import PokemonDetails from '@/app/components/PokemonDetails';
 
 const router = createBrowserRouter([
   {

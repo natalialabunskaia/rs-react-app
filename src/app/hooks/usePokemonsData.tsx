@@ -1,15 +1,15 @@
- import {useState, useCallback} from 'react';
- import { pokeApiService } from '@service/pokeApiService';
- import getErrorMessage from '@utils/getErrorMessage';
- import type { RequestStatus } from '@utils/types';
+import { useState, useCallback } from 'react';
+import { pokeApiService } from '@/app/service/pokemonApiService';
+import getErrorMessage from '@utils/getErrorMessage';
+import type { RequestStatus } from '@utils/types';
 import type { PokemonByNameResponse } from '@api/pokemonApiTypes';
 
- export const usePokemonsData = () => {
- const [results, setResults] = useState<PokemonByNameResponse[]>([]);
- const [requestStatus, setRequestStatus] = useState<RequestStatus>('idle');
- const [error, setError] = useState('');
+export const usePokemonsData = () => {
+  const [results, setResults] = useState<PokemonByNameResponse[]>([]);
+  const [requestStatus, setRequestStatus] = useState<RequestStatus>('idle');
+  const [error, setError] = useState('');
 
- const getPokemons = useCallback( async (term: string, page: number) => {
+  const getPokemons = useCallback(async (term: string, page: number) => {
     setRequestStatus('loading');
     setError('');
 
@@ -22,8 +22,7 @@ import type { PokemonByNameResponse } from '@api/pokemonApiTypes';
       setError(getErrorMessage(error));
       setRequestStatus('error');
     }
-  }, [])
+  }, []);
 
- return {getPokemons, results, requestStatus, error }
- }
- 
+  return { getPokemons, results, requestStatus, error };
+};

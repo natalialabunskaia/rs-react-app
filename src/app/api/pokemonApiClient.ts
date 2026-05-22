@@ -1,7 +1,11 @@
 import axios from 'axios';
 import queryString from 'query-string';
 import { pokemonApiConfig } from '@config/api';
-import type { AllPokemonRespoonse, PokemonByNameResponse, PokemonTypeResponse } from './pokemonApiTypes';
+import type {
+  AllPokemonRespoonse,
+  PokemonByNameResponse,
+  PokemonTypeResponse,
+} from '@api/pokemonApiTypes';
 
 const instance = axios.create({
   baseURL: pokemonApiConfig.baseUrl,
@@ -19,6 +23,7 @@ export const pokemonApiClient = {
     const res = await instance.get(
       `${pokemonApiConfig.endpoints.pokemon}?${query}`
     );
+
     return res.data;
   },
 
@@ -26,6 +31,7 @@ export const pokemonApiClient = {
     const res = await instance.get(
       `${pokemonApiConfig.endpoints.type}/${type}`
     );
+
     return res.data;
   },
 
@@ -35,6 +41,7 @@ export const pokemonApiClient = {
     const res = await instance.get(
       `${pokemonApiConfig.endpoints.pokemon}/${pokemonName}`
     );
+
     return res.data;
   },
 };
