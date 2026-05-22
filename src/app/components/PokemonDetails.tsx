@@ -4,7 +4,7 @@ import {
   useParams,
   useSearchParams,
 } from 'react-router';
-import './PokemonDetails.css';
+import '@pages/HomePage/HomePage.css';
 
 import type { PokemonByNameResponse } from '@/app/api/pokemonApiTypes';
 

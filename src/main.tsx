@@ -6,7 +6,7 @@ import Root from '@routes/root';
 import { HomePage } from '@pages/HomePage/HomePage';
 import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
 import AboutPage from '@pages/AboutPage/AboutPage';
-import PokemonDetails from '@components/PokemonDetails/PokemonDetails';
+import PokemonDetails from '@/app/components/PokemonDetails';
 
 const router = createBrowserRouter([
   {

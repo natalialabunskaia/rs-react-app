@@ -7,6 +7,9 @@ import Spinner from '@components/Spinner';
 import { ErrorBoundary } from '@components/ErrorBoundary';
 import CrashButton from '@components/CrashButton';
 import { Outlet, useSearchParams, useNavigate } from 'react-router';
+import { useCounterStore } from '@store/store';
+import Counter from '@/app/components/Counter';
+import '@app/pages/HomePage/HomePage.css';
 
 export const HomePage = () => {
   const { getLocalStorageValue, setLocalStorageValue } =
@@ -18,6 +21,8 @@ export const HomePage = () => {
   const [errorBoundaryKey, setErrorBoundaryKey] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+
+  const count = useCounterStore((state) => state.count);
 
   const search = searchParams.get('search') || '';
   const page = searchParams.get('page') || '1';
@@ -33,7 +38,7 @@ export const HomePage = () => {
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (input.trim() === '') {
-      return 
+      return;
     }
     const trimmedInput = input.trim().toLowerCase();
     setLocalStorageValue(trimmedInput);
@@ -51,9 +56,7 @@ export const HomePage = () => {
   };
 
   useEffect(() => {
-
     if (!search && storedSearch) {
-
       const params = new URLSearchParams();
 
       params.set('page', '1');
@@ -83,8 +86,9 @@ export const HomePage = () => {
               <CrashButton />
             </ErrorBoundary>
           </section>
-          <aside className="col-4 py-5">
+          <aside className="col-4 pokemon-sidebar">
             <Outlet context={{ pokemons: results }} />
+            <Counter count={count} />
           </aside>
         </div>
       </div>
