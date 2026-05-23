@@ -7,7 +7,7 @@ import Spinner from '@components/Spinner';
 import { ErrorBoundary } from '@components/ErrorBoundary';
 import CrashButton from '@components/CrashButton';
 import { Outlet, useSearchParams, useNavigate } from 'react-router';
-import Counter from '@/app/components/Counter';
+import PokemonPocket from '@/app/components/PokemonPocket';
 import styles from './HomePage.module.css';
 
 export const HomePage = () => {
@@ -87,7 +87,7 @@ export const HomePage = () => {
           </section>
           <aside className={`col-4 ${styles.pokemonSidebar}`}>
             <Outlet context={{ pokemons: results }} />
-            <Counter />
+            <PokemonPocket />
           </aside>
         </div>
       </div>
