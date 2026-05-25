@@ -1,30 +1,22 @@
 import { useSearchParams } from 'react-router';
 import { NavLink } from 'react-router';
-import { usePokemonStore } from '@stores/PokemonStore';
+import { usePokemonStore } from '@/app/stores/PokemonStore';
 import type { PokemonCardProps } from '@utils/types';
 
-const PokemonCard = ({ pokemon }: PokemonCardProps) => {
+const PokemonCard = ({
+  pokemon,
+  handleChoose,
+  isChecked,
+}: PokemonCardProps) => {
   const { name, imgUrl, description } = pokemon;
   const [searchParams] = useSearchParams();
-  const { addPokemon, removePokemon, pokemons } = usePokemonStore();
+  const { pokemons } = usePokemonStore();
 
   const page = searchParams.get('page') || '1';
   const search = searchParams.get('search') || '';
 
-  const isChecked = pokemons.some(
-    (pokemonFromStore) => pokemonFromStore.name === pokemon.name
-  );
-
   const path = (page: string): string =>
     `details/${name}?search=${search}&page=${page}`;
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.checked) {
-      addPokemon(pokemon);
-    } else {
-      removePokemon(pokemon.name);
-    }
-  };
 
   return (
     <div className="col" data-testid="pokemon-card">
@@ -32,8 +24,8 @@ const PokemonCard = ({ pokemon }: PokemonCardProps) => {
         <div className="card-body">
           <div>
             <input
-              onChange={handleChange}
-              checked={isChecked}
+              onChange={(e) => handleChoose(e, pokemon)}
+              checked={isChecked(pokemons, pokemon)}
               className="form-check-input me-1"
               type="checkbox"
               id="chosen-pokemon"
