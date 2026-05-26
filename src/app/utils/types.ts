@@ -2,11 +2,39 @@ import type { PokemonByNameResponse } from '../api/pokemonApiTypes';
 
 export type PokemonCardProps = {
   pokemon: PokemonByNameResponse;
+  handleChoose: (
+    e: React.ChangeEvent<HTMLInputElement>,
+    pokemon: PokemonByNameResponse
+  ) => void;
+  isChecked: (
+    pokemons: PokemonByNameResponse[],
+    pokemon: PokemonByNameResponse
+  ) => boolean;
+};
+
+export type PokemonListProps = {
+  pokemons: PokemonByNameResponse[];
+  handleChoose: (
+    e: React.ChangeEvent<HTMLInputElement>,
+    pokemon: PokemonByNameResponse
+  ) => void;
+  isChecked: (
+    pokemons: PokemonByNameResponse[],
+    pokemon: PokemonByNameResponse
+  ) => boolean;
 };
 
 export type ResultProps = {
   pokemons: PokemonByNameResponse[];
   status: RequestStatus;
+  handleChoose: (
+    e: React.ChangeEvent<HTMLInputElement>,
+    pokemon: PokemonByNameResponse
+  ) => void;
+  isChecked: (
+    pokemons: PokemonByNameResponse[],
+    pokemon: PokemonByNameResponse
+  ) => boolean;
 };
 
 export type RequestStatus = 'idle' | 'loading' | 'success' | 'error';

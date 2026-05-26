@@ -34,7 +34,7 @@ const PokemonDetails = () => {
         </div>
 
         <div>
-          <h1>About {name}</h1>
+          <h1 className="text-capitalize">About {name}</h1>
           <p>This Pokémon is {details}</p>
           <p>Types: {description}</p>
 

@@ -1,4 +1,4 @@
-import { it, describe, expect, afterEach } from 'vitest';
+import { it, describe, expect, afterEach, vi } from 'vitest';
 import { render, screen, cleanup, within } from '@testing-library/react';
 import Results from '@components/Results';
 import { MemoryRouter } from 'react-router';
@@ -29,11 +29,19 @@ const mockPokemons = [
   },
 ];
 
+const handleChoose = vi.fn();
+const isChecked = vi.fn();
+
 describe('Rendering Tests', () => {
   it('should render Results component', () => {
     render(
       <MemoryRouter>
-        <Results pokemons={mockPokemons} status="success" />
+        <Results
+          pokemons={mockPokemons}
+          status="success"
+          handleChoose={handleChoose}
+          isChecked={isChecked}
+        />
       </MemoryRouter>
     );
     const resultsContainer = screen.getByTestId('results-container');
@@ -43,7 +51,12 @@ describe('Rendering Tests', () => {
   it('should render one card for each pokemon', () => {
     render(
       <MemoryRouter>
-        <Results pokemons={mockPokemons} status="success" />
+        <Results
+          pokemons={mockPokemons}
+          status="success"
+          handleChoose={handleChoose}
+          isChecked={isChecked}
+        />
       </MemoryRouter>
     );
     const pokemonCards = screen.getAllByTestId('pokemon-card');
@@ -53,7 +66,12 @@ describe('Rendering Tests', () => {
   it('each card displays pokemon name', () => {
     render(
       <MemoryRouter>
-        <Results pokemons={mockPokemons} status="success" />
+        <Results
+          pokemons={mockPokemons}
+          status="success"
+          handleChoose={handleChoose}
+          isChecked={isChecked}
+        />
       </MemoryRouter>
     );
     const pokemonCards = screen.getAllByTestId('pokemon-card');
@@ -66,7 +84,12 @@ describe('Rendering Tests', () => {
   it('each card displays pokemon description', () => {
     render(
       <MemoryRouter>
-        <Results pokemons={mockPokemons} status="success" />
+        <Results
+          pokemons={mockPokemons}
+          status="success"
+          handleChoose={handleChoose}
+          isChecked={isChecked}
+        />
       </MemoryRouter>
     );
     const pokemonCards = screen.getAllByTestId('pokemon-card');
@@ -81,7 +104,12 @@ describe('Rendering Tests', () => {
   it('each card displays pokemon image', () => {
     render(
       <MemoryRouter>
-        <Results pokemons={mockPokemons} status="success" />
+        <Results
+          pokemons={mockPokemons}
+          status="success"
+          handleChoose={handleChoose}
+          isChecked={isChecked}
+        />
       </MemoryRouter>
     );
     const pokemonCards = screen.getAllByTestId('pokemon-card');

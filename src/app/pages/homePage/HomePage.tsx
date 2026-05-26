@@ -7,8 +7,10 @@ import Spinner from '@components/Spinner';
 import { ErrorBoundary } from '@components/ErrorBoundary';
 import CrashButton from '@components/CrashButton';
 import { Outlet, useSearchParams, useNavigate } from 'react-router';
-import Counter from '@/app/components/Counter';
+import PokemonPocket from '@/app/components/PokemonPocket';
 import styles from './HomePage.module.css';
+import { usePokemonStore } from '@/app/stores/PokemonStore';
+import type { PokemonByNameResponse } from '@/app/api/pokemonApiTypes';
 
 export const HomePage = () => {
   const { getLocalStorageValue, setLocalStorageValue } =
@@ -20,6 +22,7 @@ export const HomePage = () => {
   const [errorBoundaryKey, setErrorBoundaryKey] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { addPokemon, removePokemon } = usePokemonStore();
 
   const search = searchParams.get('search') || '';
   const page = searchParams.get('page') || '1';
@@ -52,6 +55,26 @@ export const HomePage = () => {
     resetErrorBoundary();
   };
 
+  const isPokemonChecked = (
+    pokemons: PokemonByNameResponse[],
+    pokemon: PokemonByNameResponse
+  ): boolean => {
+    return pokemons.some(
+      (pokemonFromStore) => pokemonFromStore.name === pokemon.name
+    );
+  };
+
+  const handleChoosePokemon = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    pokemon: PokemonByNameResponse
+  ) => {
+    if (e.target.checked) {
+      addPokemon(pokemon);
+    } else {
+      removePokemon(pokemon.name);
+    }
+  };
+
   useEffect(() => {
     if (!search && storedSearch) {
       const params = new URLSearchParams();
@@ -81,13 +104,18 @@ export const HomePage = () => {
         <div className="row">
           <section className="col-8">
             <ErrorBoundary key={errorBoundaryKey}>
-              <Results pokemons={results} status={requestStatus} />
+              <Results
+                pokemons={results}
+                status={requestStatus}
+                handleChoose={handleChoosePokemon}
+                isChecked={isPokemonChecked}
+              />
               <CrashButton />
             </ErrorBoundary>
           </section>
           <aside className={`col-4 ${styles.pokemonSidebar}`}>
             <Outlet context={{ pokemons: results }} />
-            <Counter />
+            <PokemonPocket />
           </aside>
         </div>
       </div>
