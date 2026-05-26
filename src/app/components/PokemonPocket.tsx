@@ -1,8 +1,15 @@
 import { usePokemonStore } from '@/app/stores/PokemonStore';
+import convertToCSV from '@utils/convertToCSV';
+import dowloadCSV from '@utils/downloadCSV';
 
 const PokemonPocket = () => {
   const { removePokemon, removeAllPokemons, count, pokemons } =
     usePokemonStore();
+
+  const handleDownload = () => {
+    const scv = convertToCSV(pokemons);
+    dowloadCSV(scv, `${pokemons.length}_items.csv`);
+  };
 
   return (
     <aside className="p-4 position-sticky bottom-0 mt-auto mb-4 z-3">
@@ -38,7 +45,11 @@ const PokemonPocket = () => {
               ))}
             </ul>
             <div className="mt-3">
-              <button type="button" className="btn btn-success mb-3">
+              <button
+                onClick={handleDownload}
+                type="button"
+                className="btn btn-success mb-3"
+              >
                 Download all Pokemons
               </button>
             </div>
