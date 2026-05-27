@@ -14,7 +14,7 @@ const PokemonPocket = () => {
   return (
     <aside className="p-4 position-sticky bottom-0 mt-auto mb-4 z-3">
       {pokemons.length > 0 ? (
-        <section className="bg-white rounded-4 p-4 border text-center w-100 mx-auto">
+        <section className="bg-body rounded-4 p-4 border text-center w-100 mx-auto">
           <div>
             <h1 className="mb-3">Pokemon Pocket</h1>
             <p className="mb-3">You caught: {count} pokemon(s)!</p>

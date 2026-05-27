@@ -8,8 +8,7 @@ import { ErrorBoundary } from '@components/ErrorBoundary';
 import CrashButton from '@components/CrashButton';
 import { Outlet, useSearchParams, useNavigate } from 'react-router';
 import PokemonPocket from '@/app/components/PokemonPocket';
-import styles from './HomePage.module.css';
-import { usePokemonStore } from '@/app/stores/PokemonStore';
+import { usePokemonStore } from '@stores/PokemonStore';
 import type { PokemonByNameResponse } from '@/app/api/pokemonApiTypes';
 
 export const HomePage = () => {
@@ -113,7 +112,7 @@ export const HomePage = () => {
               <CrashButton />
             </ErrorBoundary>
           </section>
-          <aside className={`col-4 ${styles.pokemonSidebar}`}>
+          <aside className="col-4 min-vh-100 d-flex flex-column">
             <Outlet context={{ pokemons: results }} />
             <PokemonPocket />
           </aside>

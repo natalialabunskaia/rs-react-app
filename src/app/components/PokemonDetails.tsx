@@ -28,7 +28,7 @@ const PokemonDetails = () => {
 
   return (
     <aside className="p-4 position-sticky top-0 z-2">
-      <section className="bg-white rounded-4 p-3 border text-center w-100 mx-auto">
+      <section className="bg-body rounded-4 p-3 border text-center w-100 mx-auto">
         <div className="pokemon-avatar">
           <img src={imgUrl} alt={name} />
         </div>

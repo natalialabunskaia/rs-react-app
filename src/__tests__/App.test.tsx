@@ -1,6 +1,6 @@
 import { it, describe, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
-import { HomePage } from '@/app/pages/homePage/HomePage';
+import { HomePage } from '@/app/pages/HomePage';
 import { pokeApiService } from '@/app/service/pokemonApiService';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';

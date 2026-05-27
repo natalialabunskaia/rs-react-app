@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 import NavbarIcon from '@assets/pikachu.png';
+import { useTheme, useThemeUpdate } from '@/context/themeContext';
 
 const navLinks = [
   {
@@ -10,6 +11,9 @@ const navLinks = [
 ];
 
 const Navbar = () => {
+  const darkTheme = useTheme();
+  const toggleTheme = useThemeUpdate();
+
   return (
     <nav className="navbar navbar-dark bg-dark text-white">
       <div className="container-fluid bg-dark text-white px-5 d-flex align-items-center justify-content-start gap-4">
@@ -28,6 +32,13 @@ const Navbar = () => {
               {link.label}
             </Link>
           ))}
+          <button
+            className="btn btn-outline-secondary"
+            type="button"
+            onClick={toggleTheme}
+          >
+            {darkTheme ? '☀️ light' : '🌙 Dark'}
+          </button>
         </div>
       </div>
     </nav>
