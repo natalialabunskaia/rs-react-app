@@ -1,12 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import Root from '@routes/root';
-import { HomePage } from '@pages/HomePage/HomePage';
-import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
-import AboutPage from '@pages/AboutPage/AboutPage';
-import PokemonDetails from '@components/PokemonDetails/PokemonDetails';
+import { HomePage } from '@/app/pages/HomePage';
+import NotFoundPage from '@/app/pages/NotFoundPage';
+import AboutPage from '@/app/pages/AboutPage';
+import PokemonDetails from '@/app/components/PokemonDetails';
+import { ThemeProvider } from './context/themeProvider';
 
 const router = createBrowserRouter([
   {
@@ -39,6 +41,8 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root')!);
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <ThemeProvider>
+      <RouterProvider router={router} />
+    </ThemeProvider>
   </React.StrictMode>
 );

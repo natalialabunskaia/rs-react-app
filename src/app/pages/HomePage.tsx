@@ -7,6 +7,9 @@ import Spinner from '@components/Spinner';
 import { ErrorBoundary } from '@components/ErrorBoundary';
 import CrashButton from '@components/CrashButton';
 import { Outlet, useSearchParams, useNavigate } from 'react-router';
+import PokemonPocket from '@/app/components/PokemonPocket';
+import { usePokemonStore } from '@stores/PokemonStore';
+import type { PokemonByNameResponse } from '@/app/api/pokemonApiTypes';
 
 export const HomePage = () => {
   const { getLocalStorageValue, setLocalStorageValue } =
@@ -18,6 +21,7 @@ export const HomePage = () => {
   const [errorBoundaryKey, setErrorBoundaryKey] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+  const { addPokemon, removePokemon } = usePokemonStore();
 
   const search = searchParams.get('search') || '';
   const page = searchParams.get('page') || '1';
@@ -33,7 +37,7 @@ export const HomePage = () => {
   const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (input.trim() === '') {
-      return 
+      return;
     }
     const trimmedInput = input.trim().toLowerCase();
     setLocalStorageValue(trimmedInput);
@@ -50,21 +54,41 @@ export const HomePage = () => {
     resetErrorBoundary();
   };
 
+  const isPokemonChecked = (
+    pokemons: PokemonByNameResponse[],
+    pokemon: PokemonByNameResponse
+  ): boolean => {
+    return pokemons.some(
+      (pokemonFromStore) => pokemonFromStore.name === pokemon.name
+    );
+  };
+
+  const handleChoosePokemon = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    pokemon: PokemonByNameResponse
+  ) => {
+    if (e.target.checked) {
+      addPokemon(pokemon);
+    } else {
+      removePokemon(pokemon.name);
+    }
+  };
+
   useEffect(() => {
-
     if (!search && storedSearch) {
-
       const params = new URLSearchParams();
 
       params.set('page', '1');
       params.set('search', storedSearch);
 
       setSearchParams(params, { replace: true });
+
       return;
     }
 
     getPokemons(search, Number(page));
   }, [search, page, searchParams, storedSearch, getPokemons, setSearchParams]);
+
   return (
     <main>
       <section className="container-fluid bg-dark text-white px-5 pt-3 pb-5">
@@ -79,12 +103,18 @@ export const HomePage = () => {
         <div className="row">
           <section className="col-8">
             <ErrorBoundary key={errorBoundaryKey}>
-              <Results pokemons={results} status={requestStatus} />
+              <Results
+                pokemons={results}
+                status={requestStatus}
+                handleChoose={handleChoosePokemon}
+                isChecked={isPokemonChecked}
+              />
               <CrashButton />
             </ErrorBoundary>
           </section>
-          <aside className="col-4 py-5">
+          <aside className="col-4 min-vh-100 d-flex flex-column">
             <Outlet context={{ pokemons: results }} />
+            <PokemonPocket />
           </aside>
         </div>
       </div>

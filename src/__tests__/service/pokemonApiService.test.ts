@@ -1,5 +1,5 @@
 import { it, describe, expect, afterEach, vi } from 'vitest';
-import { pokeApiService } from '@service/pokeApiService';
+import { pokeApiService } from '@/app/service/pokemonApiService';
 import { pokemonApiClient } from '@api/pokemonApiClient';
 
 vi.mock('../../app/api/pokemonApiClient', () => ({
@@ -239,7 +239,7 @@ const mockPokemonDescription = [
     name: 'bulbasaur',
     imgUrl: 'https://example.com/bulbasaur.png',
     description: 'grass, poison',
-    details: "Height: 7, Weight: 69",
+    details: 'Height: 7, Weight: 69',
   },
   {
     name: 'ivysaur',
@@ -329,8 +329,8 @@ describe('pokeApiService.getPokemonDetails', () => {
   it('shows error message in description when getPokemonByName fails', async () => {
     const error = new Error('failed request');
     vi.mocked(pokemonApiClient.getPokemonByName).mockRejectedValue(error);
-    await expect(
-      pokeApiService.getPokemonDetails(mockNames)
-    ).resolves.toEqual(mockPokemonDescriptionWithErrorInCard);
+    await expect(pokeApiService.getPokemonDetails(mockNames)).resolves.toEqual(
+      mockPokemonDescriptionWithErrorInCard
+    );
   });
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { it, describe, expect, afterEach } from 'vitest';
+import { it, describe, expect, afterEach, vi } from 'vitest';
 import { render, screen, cleanup, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ErrorBoundary } from '@components/ErrorBoundary';
@@ -10,6 +10,8 @@ import { MemoryRouter } from 'react-router';
 afterEach(() => {
   cleanup();
 });
+const handleChoose = vi.fn();
+const isChecked = vi.fn();
 
 const mockPokemons = [
   {
@@ -38,6 +40,7 @@ class ErrorBoundaryChildWithError extends React.Component {
     if (shouldBeTrue) {
       throw new Error('test error from error boundary child component');
     }
+
     return null;
   }
 }
@@ -88,7 +91,12 @@ describe('User Interaction tests', () => {
     render(
       <MemoryRouter>
         <ErrorBoundary>
-          <Results pokemons={mockPokemons} status="success" />
+          <Results
+            pokemons={mockPokemons}
+            status="success"
+            handleChoose={handleChoose}
+            isChecked={isChecked}
+          />
           <CrashButton />
         </ErrorBoundary>
       </MemoryRouter>
@@ -105,7 +113,12 @@ describe('User Interaction tests', () => {
     render(
       <MemoryRouter>
         <ErrorBoundary>
-          <Results pokemons={mockPokemons} status="success" />
+          <Results
+            pokemons={mockPokemons}
+            status="success"
+            handleChoose={handleChoose}
+            isChecked={isChecked}
+          />
           <CrashButton />
         </ErrorBoundary>
       </MemoryRouter>

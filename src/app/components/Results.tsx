@@ -2,14 +2,23 @@ import PokemonList from '@components/PokemonList';
 import type { ResultProps } from '@utils/types';
 import { Pagination } from '@components/Pagination';
 
-const Results = ({ pokemons, status }: ResultProps) => {
+const Results = ({
+  pokemons,
+  status,
+  handleChoose,
+  isChecked,
+}: ResultProps) => {
   return (
     <section
       className="container-fluid container-xxl p-5"
       data-testid="results-container"
     >
       <Pagination status={status} />
-       <PokemonList pokemons={pokemons} />
+      <PokemonList
+        pokemons={pokemons}
+        handleChoose={handleChoose}
+        isChecked={isChecked}
+      />
       <Pagination status={status} />
     </section>
   );

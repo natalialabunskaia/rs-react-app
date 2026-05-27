@@ -6,6 +6,7 @@ const Root = () => {
     <>
       <Navbar />
       <div id="detail">
+        <div id="counter" />
         <Outlet />
       </div>
     </>

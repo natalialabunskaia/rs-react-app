@@ -12,7 +12,9 @@
       "@service/*": ["./src/app/service/*"],
       "@tests/*": ["./src/__tests__/*"],
       "@config/*": ["./src/app/config/*"],
-      "@asserts/*": ["./src/asserts/*"]
+      "@assets/*": ["./src/assets/*"],
+      "@stores/*": ["./src/app/stores/*"],
+      "@context/*": ["./src/context/*"]
     },
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "es2023",

@@ -1,7 +1,6 @@
 import { it, describe, expect } from 'vitest';
 import getErrorMessage from '@utils/getErrorMessage';
 
-
 describe('getErrorMessage', () => {
   it('should return network error message for network error', () => {
     const networkErrorMessage =

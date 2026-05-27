@@ -7,7 +7,7 @@ export const Pagination = ({ status }: RequestStatusProps) => {
   const page = Number(searchParams.get('page')) || 1;
   const search = searchParams.get('search');
 
-   const getPageUrl = (nextPage: number): string => {
+  const getPageUrl = (nextPage: number): string => {
     const params = new URLSearchParams();
 
     params.set('page', String(nextPage));
@@ -31,20 +31,12 @@ export const Pagination = ({ status }: RequestStatusProps) => {
     <nav aria-label="Page navigation">
       <ul className="pagination">
         <li className="page-item">
-          <NavLink
-            to={prevPage()}
-            className="page-link"
-            aria-label="Previous"
-          >
+          <NavLink to={prevPage()} className="page-link" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
           </NavLink>
         </li>
         <li className="page-item">
-          <NavLink
-            to={nextPage()}
-            className="page-link"
-            aria-label="Next"
-          >
+          <NavLink to={nextPage()} className="page-link" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
           </NavLink>
         </li>
