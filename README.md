@@ -2,7 +2,7 @@
 
 # React Pokédex
 
-A single-page application built with **React**, **TypeScript**, and **Vite** that allows users to search, browse, and save Pokémon.
+An application built with **React**, **TypeScript**, and **Vite** that allows users to search, browse, and save Pokémon.
 
 This project was developed as part of the **RS School React Course** and demonstrates modern React development practices, routing, state management, API integration, testing, and responsive UI development.
 
